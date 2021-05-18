@@ -2,6 +2,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:batch="http://www.springframework.org/schema/batch"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
@@ -10,24 +12,37 @@
         http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd
         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
-        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+        http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
 
 	<!-- 테스트용 Job -->
-	<bean id="testJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+	<bean id="testJob"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 		<property name="jobClass" value="com.douzone.batch.job.SampleJob" />
-	</bean> 
-	
-	<!-- 테스트용 Trigger --> 
-	<bean id="testJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail" ref="testJob" />
-		<!-- 매 10초마다 실행 -->
-        <property name="cronExpression" value="*/10 * * * * ?" />
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="jobName" value="studentJob" />
+				<entry key="jobLocator" value-ref="jobRegistry" />
+				<entry key="jobLauncher" value-ref="jobLauncher" />
+			</map>
+		</property>
 	</bean>
-	
+
+	<!-- 테스트용 Trigger -->
+	<bean id="testJobTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="testJob" />
+		<!-- 매 2분마다 실행 -->
+		<property name="cronExpression" value="0 0/2 * * * ?" />
+	</bean>
+
 	<!-- 테스트용 Scheduler -->
-	<bean id="testJobScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+	<bean id="testJobScheduler"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
-            <list><ref bean="testJobTrigger" /></list>
-        </property>
+			<list>
+				<ref bean="testJobTrigger" />
+			</list>
+		</property>
 	</bean>
 </beans>
