@@ -21,7 +21,7 @@
 		<property name="jobClass" value="com.douzone.batch.job.SampleJob" />
 		<property name="jobDataAsMap">
 			<map>
-				<entry key="jobName" value="studentJob" />
+				<entry key="jobName" value="deleteTaskJob" />
 				<entry key="jobLocator" value-ref="jobRegistry" />
 				<entry key="jobLauncher" value-ref="jobLauncher" />
 			</map>
@@ -33,7 +33,7 @@
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="testJob" />
 		<!-- 매 2분마다 실행 -->
-		<property name="cronExpression" value="0 0/2 * * * ?" />
+		<property name="cronExpression" value="0 0/1 * * * ?" />
 	</bean>
 
 	<!-- 테스트용 Scheduler -->
