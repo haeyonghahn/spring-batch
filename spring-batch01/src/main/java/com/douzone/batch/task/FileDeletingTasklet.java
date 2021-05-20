@@ -25,12 +25,17 @@ public class FileDeletingTasklet implements Tasklet {
 		try {
 			File dir = directory.getFile();
 			File[] files = dir.listFiles();
-			for(File file : files) {
-				boolean deleted = file.delete();
-				if(!deleted)
-					throw new Exception("파일이 삭제되지 않았습니다. " + file.getPath());
-				else 
-					System.out.println("파일이 삭제되었습니다. " + file.getPath());
+			if(files.length > 0) {				
+				for(File file : files) {
+					boolean deleted = file.delete();
+					if(!deleted)
+						throw new Exception("파일이 삭제되지 않았습니다. " + file.getPath());
+					else 
+						System.out.println("파일이 삭제되었습니다. " + file.getPath());
+				}
+			}
+			else {
+				System.err.println("삭제할 파일이 없습니다. ---------------------------");
 			}
 		} catch(Exception e) {
 			throw e;
