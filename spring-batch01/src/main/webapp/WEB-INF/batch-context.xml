@@ -74,9 +74,7 @@
 	</batch:job>
 	
 	<!-- tasklet -->
-	<bean id="fileDeletingTasklet" class="com.douzone.batch.task.FileDeletingTasklet">
-		<property name="directory" value="classpath:txt/" />
-	</bean>
+	<bean id="fileDeletingTasklet" class="com.douzone.batch.task.FileDeletingTasklet" />
 	
 	<batch:job id="deleteTaskJob" xmlns:batch="http://www.springframework.org/schema/batch">
 		<batch:step id="deleteDirStep">
