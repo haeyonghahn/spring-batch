@@ -6,5 +6,6 @@
   <packaging>pom</packaging>
   <modules>
   	<module>spring-batch01</module>
+  	<module>spring-batch02</module>
   </modules>
 </project>
