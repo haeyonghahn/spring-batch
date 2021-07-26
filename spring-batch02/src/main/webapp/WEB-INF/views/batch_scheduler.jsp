@@ -39,7 +39,7 @@
 			<div class="col-lg-3">
 				<h3 class="my-4 text-center">Order by</h3>
 				<div class="list-group mb-4">
-					<a class="list-group-item list-group-item-info text-center font-weight-bold">Time</a>
+					<a href="#" class="list-group-item list-group-item-info text-center font-weight-bold">Time</a>
 					<a href="#" class="list-group-item list-group-item-action text-center font-weight-bold">Data Count</a>
 				</div>
 			</div>

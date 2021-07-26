@@ -9,7 +9,7 @@
 	</parent>
 	<artifactId>spring-batch02</artifactId>
 	<packaging>war</packaging>
-	
+
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -36,65 +36,65 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
-		
+
 		<!-- spring boot devtools : live load -->
 		<!-- jsp가 수정되었을 때 바로바로 변경 사항을 보여줄 수 있도록 한다. -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 		</dependency>
-		
+
 		<!-- spring boot web starter -->
 		<!-- spring mvc와 spring web을 커버한 것이 spring boot web starter이다. -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		
+
 		<!-- spring boot aop starter -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
-		
+
 		<!-- MyBatis -->
 		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
 			<artifactId>mybatis-spring-boot-starter</artifactId>
 			<version>1.3.2</version>
 		</dependency>
-		
+
 		<!-- Common DBCP -->
 		<dependency>
 			<groupId>commons-dbcp</groupId>
 			<artifactId>commons-dbcp</artifactId>
 			<version>1.4</version>
 		</dependency>
-		
+
 		<!-- mariadb java client -->
 		<dependency>
 			<groupId>org.mariadb.jdbc</groupId>
 			<artifactId>mariadb-java-client</artifactId>
 		</dependency>
-		
+
 		<!-- jstl -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 		</dependency>
-		
+
 		<!-- jackson -->
 		<dependency>
-		    <groupId>com.fasterxml.jackson.core</groupId>
-		    <artifactId>jackson-databind</artifactId>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
 		</dependency>
-		
+
 		<!-- tomcat jasper : jsp를 servlet으로 바꿔주는 것 -->
 		<dependency>
 			<groupId>org.apache.tomcat.embed</groupId>
 			<artifactId>tomcat-embed-jasper</artifactId>
 		</dependency>
-		
+
 		<!-- common fileupload -->
 		<dependency>
 			<groupId>commons-fileupload</groupId>
@@ -107,7 +107,19 @@
 			<artifactId>commons-io</artifactId>
 			<version>1.4</version>
 		</dependency>
+
+		<!-- spring boot batch -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-batch</artifactId>
+		</dependency>
 		
+		<!-- quartz -->
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+		</dependency>
+
 		<!-- test -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -145,18 +157,9 @@
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
-			<!--  
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>tomcat-maven-plugin</artifactId>
-				<configuration>
-					<url>http://192.168.0.223:8080/manager/text</url>
-					<path>/nest</path>
-					<username>admin</username>
-					<password>admin</password>
-				</configuration>
-			</plugin>
-			-->
+			<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>tomcat-maven-plugin</artifactId> 
+				<configuration> <url>http://192.168.0.223:8080/manager/text</url> <path>/nest</path> 
+				<username>admin</username> <password>admin</password> </configuration> </plugin> -->
 		</plugins>
 	</build>
 </project>
