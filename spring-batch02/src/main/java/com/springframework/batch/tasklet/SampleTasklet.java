@@ -9,9 +9,7 @@ public class SampleTasklet implements Tasklet {
 
 	@Override
 	public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-		System.out.println("---- SampleTasklet ----");
+		System.out.println("####### SampleTasklet");
 		return RepeatStatus.FINISHED;
 	}
-
-	
 }

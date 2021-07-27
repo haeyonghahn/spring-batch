@@ -1,36 +1,54 @@
-package com.springframework.bath.job;
+package com.springframework.batch.config;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.core.step.tasklet.Tasklet;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.springframework.batch.items.CustomItemReader;
+import com.springframework.batch.items.CustomItemWriter;
+
 @Configuration
 @EnableBatchProcessing
-public class SampleJob {
+public class BatchConfig {
 
 	@Autowired
 	public JobBuilderFactory jobBuilderFactory;
 
 	@Autowired
 	public StepBuilderFactory stepBuilderFactory;
-	
+
 	@Bean
 	public Job testJob() {
 		return jobBuilderFactory.get("testJob")
-				.start(sampleTasklet())
+				.incrementer(new RunIdIncrementer())
+				.flow(step1())
+				.end()
+				.build();
+	}
+
+	@Bean
+	public Step step1() {
+		return stepBuilderFactory.get("step1")
+				.<Object, Object> chunk(10)
+				.reader(reader())
+				.writer(writer())
 				.build();
 	}
 	
 	@Bean
-	public Step sampleTasklet() {		
-		return stepBuilderFactory.get("sampleTasklet")
-			.tasklet((Tasklet) sampleTasklet())
-			.build();
+	public CustomItemReader reader() {
+		return new CustomItemReader();
+	}
+
+	@Bean
+	public CustomItemWriter writer() {
+		return new CustomItemWriter();
 	}
 }
+

@@ -1,4 +1,4 @@
-package com.springframework.batch.config.quartz;
+package com.springframework.batch.config;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -44,18 +44,20 @@ public class QuartzJobLauncher extends QuartzJobBean {
 	public void setJobLocator(JobLocator jobLocator) {
 		this.jobLocator = jobLocator;
 	}
-	
+
 	@Override
-	protected void executeInternal(JobExecutionContext context) throws JobExecutionException {	
+	protected void executeInternal(JobExecutionContext arg0) throws JobExecutionException {
 		JobParameters jobParameters = new JobParametersBuilder().addLong("time", System.currentTimeMillis()).toJobParameters();
+
 		try {
 			Job job = jobLocator.getJob(jobName);
 			JobExecution jobExecution = jobLauncher.run(job, jobParameters);
-			System.out.println("########### Status da execution: " + jobExecution.getStatus());
-		} catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException
-				| JobParametersInvalidException | NoSuchJobException e) {
-			e.printStackTrace();
-		}
 
+			System.out.println("########### Status: " + jobExecution.getStatus());
+
+		} catch(JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException 
+				| JobParametersInvalidException | NoSuchJobException  e) {
+			e.printStackTrace();
+		} 
 	}
 }

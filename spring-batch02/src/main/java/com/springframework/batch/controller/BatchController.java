@@ -17,8 +17,8 @@ public class BatchController {
 	
 	@RequestMapping({"/", "/batch"})
 	public String batch() {
-//		List<Employees> employeeList = batchService.select_employees();
-//		System.out.println(employeeList);
+		List<Employees> employeeList = batchService.select_employees();
+		System.out.println(employeeList);
 		return "batch_scheduler";
 	}
 }

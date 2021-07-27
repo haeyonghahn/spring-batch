@@ -1,4 +1,4 @@
-package com.springframework.batch.config.quartz;
+package com.springframework.batch.config;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +27,7 @@ public class QuartzConfig {
 	public JobRegistryBeanPostProcessor jobRegistryBeanPostProcessor(JobRegistry jobRegistry) {
 		JobRegistryBeanPostProcessor jobRegistryBeanPostProcessor = new JobRegistryBeanPostProcessor();
 		jobRegistryBeanPostProcessor.setJobRegistry(jobRegistry);
+
 		return jobRegistryBeanPostProcessor;
 	}
 
@@ -48,8 +49,8 @@ public class QuartzConfig {
 	public CronTriggerFactoryBean cronTriggerFactoryBean() {
 		CronTriggerFactoryBean cronTriggerFactoryBean = new CronTriggerFactoryBean();
 		cronTriggerFactoryBean.setJobDetail(jobDetailFactoryBean().getObject());
-		// rodar de 10 em 10 segundos
-		cronTriggerFactoryBean.setCronExpression("* /1 * * * ?");
+		//run every 10 seconds
+		cronTriggerFactoryBean.setCronExpression("*/10 * * * * ? *");
 
 		return cronTriggerFactoryBean;
 	}
@@ -58,6 +59,7 @@ public class QuartzConfig {
 	public SchedulerFactoryBean schedulerFactoryBean() {
 		SchedulerFactoryBean schedulerFactoryBean = new SchedulerFactoryBean();
 		schedulerFactoryBean.setTriggers(cronTriggerFactoryBean().getObject());
+
 		return schedulerFactoryBean;
 	}
 }

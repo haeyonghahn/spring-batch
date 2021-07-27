@@ -1,7 +1,7 @@
 # active spring profile
 spring:
    profiles:
-      active: production
+      active: dev
 
 ---
 # common spring configuration
@@ -31,13 +31,13 @@ spring:
          enabled: true
          
 # datasource
-#   datasource:
-#      driver-class-name: org.mariadb.jdbc.Driver
-#      url: jdbc:mysql://localhost:3306/employees
-#      username: root
-#      password: tiger
-#      initialSize: 10
-#      maxActive: 100
+   datasource:
+      driver-class-name: org.mariadb.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/employees
+      username: root
+      password: tiger
+      initialSize: 10
+      maxActive: 100
 
 ---
 # spring production profile configuration
@@ -52,16 +52,9 @@ server:
       context-path: /
 
 #mybatis
-#mybatis:
-#   config-location: classpath:mybatis/configuration.xml
+mybatis:
+   config-location: classpath:mybatis/configuration.xml
 
-# quartz
-quartz:
-   scheduler-name: QuartzScheduler
-   properties:
-      org:
-         threadPool:
-            threadCount: 5
 #logging
 #logging:
 #   config: classpath:logback.xml
