@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.quartz.CronTriggerFactoryBean;
 import org.springframework.scheduling.quartz.JobDetailFactoryBean;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
+import org.springframework.scheduling.quartz.SimpleTriggerFactoryBean;
 
 @Configuration
 public class QuartzConfig {
@@ -63,27 +64,31 @@ public class QuartzConfig {
 	public CronTriggerFactoryBean cronTriggerFactoryBean01() {
 		CronTriggerFactoryBean cronTriggerFactoryBean = new CronTriggerFactoryBean();
 		cronTriggerFactoryBean.setJobDetail(jobDetailFactoryBean01().getObject());
-		//run every 10 seconds
-		cronTriggerFactoryBean.setCronExpression("*/10 * * * * ? *");
+		// 매 10초마다 실행
+//		cronTriggerFactoryBean.setCronExpression("*/10 * * * * ? *");
+		// 매 2분마다 실행
+		cronTriggerFactoryBean.setCronExpression("0 0/2 * ?");
 
 		return cronTriggerFactoryBean;
 	}
 	
 	@Bean
-	public CronTriggerFactoryBean cronTriggerFactoryBean02() {
-		CronTriggerFactoryBean cronTriggerFactoryBean = new CronTriggerFactoryBean();
-		cronTriggerFactoryBean.setJobDetail(jobDetailFactoryBean01().getObject());
-		//run every 10 seconds
-		cronTriggerFactoryBean.setCronExpression("*/10 * * * * ? *");
-
-		return cronTriggerFactoryBean;
+	public SimpleTriggerFactoryBean simpleTriggerFactoryBean02() {
+		SimpleTriggerFactoryBean simpleTriggerFactoryBean = new SimpleTriggerFactoryBean();
+		simpleTriggerFactoryBean.setJobDetail(jobDetailFactoryBean01().getObject());
+		// 시작하고 1분 후에 실행
+		simpleTriggerFactoryBean.setStartDelay(60000);
+		// 매 24시간마다 실행
+		simpleTriggerFactoryBean.setRepeatInterval(864000000);
+		
+		return simpleTriggerFactoryBean;
 	}
 
 	@Bean
 	public SchedulerFactoryBean schedulerFactoryBean() {
 		SchedulerFactoryBean schedulerFactoryBean = new SchedulerFactoryBean();
 		schedulerFactoryBean.setTriggers(cronTriggerFactoryBean01().getObject());
-		schedulerFactoryBean.setTriggers(cronTriggerFactoryBean02().getObject());
+		schedulerFactoryBean.setTriggers(simpleTriggerFactoryBean02().getObject());
 
 		return schedulerFactoryBean;
 	}

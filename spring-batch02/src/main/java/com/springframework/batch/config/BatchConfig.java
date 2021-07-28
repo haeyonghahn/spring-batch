@@ -42,6 +42,24 @@ public class BatchConfig {
 	}
 	
 	@Bean
+	public Job testJob02() {
+		return jobBuilderFactory.get("testJob02")
+				.incrementer(new RunIdIncrementer())
+				.flow(step01())
+				.end()
+				.build();
+	}
+
+	@Bean
+	public Step step02() {
+		return stepBuilderFactory.get("step02")
+				.<Object, Object> chunk(10)
+				.reader(reader())
+				.writer(writer())
+				.build();
+	}
+	
+	@Bean
 	public CustomItemReader reader() {
 		return new CustomItemReader();
 	}
