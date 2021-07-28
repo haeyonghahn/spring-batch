@@ -32,11 +32,25 @@ public class QuartzConfig {
 	}
 
 	@Bean
-	public JobDetailFactoryBean jobDetailFactoryBean() {
+	public JobDetailFactoryBean jobDetailFactoryBean01() {
 		JobDetailFactoryBean jobDetailFactoryBean = new JobDetailFactoryBean();
 		jobDetailFactoryBean.setJobClass(QuartzJobLauncher.class);
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("jobName", "testJob");
+		map.put("jobName", "testJob01");
+		map.put("jobLauncher", jobLauncher);
+		map.put("jobLocator", jobLocator);
+
+		jobDetailFactoryBean.setJobDataAsMap(map);
+
+		return jobDetailFactoryBean;
+	}
+	
+	@Bean
+	public JobDetailFactoryBean jobDetailFactoryBean02() {
+		JobDetailFactoryBean jobDetailFactoryBean = new JobDetailFactoryBean();
+		jobDetailFactoryBean.setJobClass(QuartzJobLauncher.class);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("jobName", "testJob02");
 		map.put("jobLauncher", jobLauncher);
 		map.put("jobLocator", jobLocator);
 
@@ -46,9 +60,19 @@ public class QuartzConfig {
 	}
 
 	@Bean
-	public CronTriggerFactoryBean cronTriggerFactoryBean() {
+	public CronTriggerFactoryBean cronTriggerFactoryBean01() {
 		CronTriggerFactoryBean cronTriggerFactoryBean = new CronTriggerFactoryBean();
-		cronTriggerFactoryBean.setJobDetail(jobDetailFactoryBean().getObject());
+		cronTriggerFactoryBean.setJobDetail(jobDetailFactoryBean01().getObject());
+		//run every 10 seconds
+		cronTriggerFactoryBean.setCronExpression("*/10 * * * * ? *");
+
+		return cronTriggerFactoryBean;
+	}
+	
+	@Bean
+	public CronTriggerFactoryBean cronTriggerFactoryBean02() {
+		CronTriggerFactoryBean cronTriggerFactoryBean = new CronTriggerFactoryBean();
+		cronTriggerFactoryBean.setJobDetail(jobDetailFactoryBean01().getObject());
 		//run every 10 seconds
 		cronTriggerFactoryBean.setCronExpression("*/10 * * * * ? *");
 
@@ -58,7 +82,8 @@ public class QuartzConfig {
 	@Bean
 	public SchedulerFactoryBean schedulerFactoryBean() {
 		SchedulerFactoryBean schedulerFactoryBean = new SchedulerFactoryBean();
-		schedulerFactoryBean.setTriggers(cronTriggerFactoryBean().getObject());
+		schedulerFactoryBean.setTriggers(cronTriggerFactoryBean01().getObject());
+		schedulerFactoryBean.setTriggers(cronTriggerFactoryBean02().getObject());
 
 		return schedulerFactoryBean;
 	}

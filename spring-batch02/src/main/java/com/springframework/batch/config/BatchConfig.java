@@ -24,17 +24,17 @@ public class BatchConfig {
 	public StepBuilderFactory stepBuilderFactory;
 
 	@Bean
-	public Job testJob() {
-		return jobBuilderFactory.get("testJob")
+	public Job testJob01() {
+		return jobBuilderFactory.get("testJob01")
 				.incrementer(new RunIdIncrementer())
-				.flow(step1())
+				.flow(step01())
 				.end()
 				.build();
 	}
 
 	@Bean
-	public Step step1() {
-		return stepBuilderFactory.get("step1")
+	public Step step01() {
+		return stepBuilderFactory.get("step01")
 				.<Object, Object> chunk(10)
 				.reader(reader())
 				.writer(writer())
