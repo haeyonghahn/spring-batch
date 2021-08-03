@@ -65,7 +65,7 @@ public class QuartzConfig {
 		CronTriggerFactoryBean cronTriggerFactoryBean = new CronTriggerFactoryBean();
 		cronTriggerFactoryBean.setJobDetail(jobDetailFactoryBean01().getObject());
 		// 매 10초마다 실행
-		cronTriggerFactoryBean.setCronExpression("*/10 * * * * ? *");
+		cronTriggerFactoryBean.setCronExpression("*/30 * * * * ? *");
 		// 매 2분마다 실행
 //		cronTriggerFactoryBean.setCronExpression("0 0/2 * ?");
 
@@ -88,7 +88,7 @@ public class QuartzConfig {
 	public SchedulerFactoryBean schedulerFactoryBean() {
 		SchedulerFactoryBean schedulerFactoryBean = new SchedulerFactoryBean();
 		schedulerFactoryBean.setTriggers(cronTriggerFactoryBean01().getObject());
-		schedulerFactoryBean.setTriggers(simpleTriggerFactoryBean02().getObject());
+//		schedulerFactoryBean.setTriggers(simpleTriggerFactoryBean02().getObject());
 
 		return schedulerFactoryBean;
 	}
