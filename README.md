@@ -27,6 +27,7 @@
 * **[스프링 배치 시작](#스프링-배치-시작)**
   * **[프로젝트 구성 및 의존성 설정](#프로젝트-구성-및-의존성-설정)**
   * **[Hello Spring Batch 시작하기](#hello-spring-batch-시작하기)**
+  * **[DB 스키마 생성 및 이해](#db-스키마-생성-및-이해)**
   
 ## 스프링 배치 시작
 ### 프로젝트 구성 및 의존성 설정
@@ -83,3 +84,43 @@ __스프링 배치 초기화 설정 클래스__
 Job 이 구동되면 Step 을 실행하고 Step 이 구동되면 Tasklet 을 실행하도록 설정한다.   
 ![image](https://user-images.githubusercontent.com/31242766/218743480-63d2d0f4-7f9a-4161-a319-f8287a854f2c.png)   
 ![image](https://user-images.githubusercontent.com/31242766/218744471-9dbbe3fd-6118-4a9b-adb1-bb1c7edbf00f.png)
+
+### DB 스키마 생성 및 이해
+1. 스프링 배치 메타 데이터
+- 스프링 배치의 실행 및 관리를 위한 목적으로 여러 도메인들(Job, Step, JobParameters..) 의 정보들을 저장, 업데이트, 조회할 수 있는 스키마를 제공한다.
+- 과거, 현재의 실행에 대한 세세한 정보, 실행에 대한 성공과 실패 여부 등을 관리함으로서 배치 운용에 있어 리스크 발생시 빠른 대처가 가능하다.
+- DB 와 연동할 경우 필수적으로 메타 테이블이 생성 되어야 한다.
+2. DB 스키마 제공
+- 파일 위치 : /org/springframework/batch/core/schema-*.sql 
+- DB 유형별로 제공한다.
+3. 스키마 생성 설정
+- 수동 생성 : 쿼리 복사 후 직접 실행
+- 자동 생성 : spring.batch.jdbc.initialize-schema 설정
+  - ALWAYS
+    - 스크립트 항상 실행
+    - RDBMS 설정이 되어 있을 경우 내장 DB 보다 우선적으로 실행
+  - EMBEDDED : 내장 DB일 때만 실행되며 스키마가 자동 생성됨, 기본값
+  - NEVER 
+    - 스크립트 항상 실행 안함 
+    - 내장 DB 일경우 스크립트가 생성이 안되기 때문에 오류 발생 
+    - 운영에서 수동으로 스크립트 생성 후 설정하는 것을 권장
+
+![image](https://user-images.githubusercontent.com/31242766/218767492-12ed78b6-33d4-49a8-ad84-7023d3aed9ec.png)   
+__Job 관련 테이블__   
+- `BATCH_JOB_INSTANCE`
+  - Job 이 실행될 때 JobInstance 정보가 저장되며 job_name 과 job_key 로 하나의 데이터가 저장
+  - 동일한 job_name과 job_key 로 중복 저장될 수 없다.
+- `BATCH_JOB_EXECUTION`
+  - job 의 실행 정보가 저장되며 Job 생성, 시작, 종료 시간, 실행 상태, 메시지 등을 관리
+- `BATCH_JOB_EXECUTION_PARAMS`
+  - Job과 함께 실행되는 JobParameter 정보를 저장
+- `BATCH_JOB_EXECUTION_CONTEXT`
+  - Job 의 실행 동안 여러가지 상태 정보, 공유 데이터를 직렬화(Json 형식)해서 저장
+  - Step 간 서로 공유 가능함
+  
+__Step 관련 테이블__   
+- `BATCH_STEP_EXECUTION`
+  - Step 의 실행 정보가 저장되며 생성, 시작, 종료 시간, 실행 상태, 메시지 등을 관리
+- `BATCH_STEP_EXECUTION_CONTEXT`
+  - Step 의 실행동안 여러가지 상태 정보, 공유 데이터를 직렬화(Json 형식)해서 저장
+  - Step 별로 저장되며 Step 간 서로 공유할 수 없음
