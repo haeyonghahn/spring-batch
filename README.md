@@ -1,4 +1,6 @@
 # spring-batch
+해당 문서 출처는 [스프링 배치 - Spring Boot 기반으로 개발하는 Spring Batch](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-%EB%B0%B0%EC%B9%98/dashboard) 로 작성되었습니다.
+
 1. 배치 핵심 패턴
 - Read : 데이터베이스, 파일, 큐에서 다량의 데이터를 조회한다.
 - Process : 특정 방법으로 데이터를 가공한다.
