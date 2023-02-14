@@ -25,7 +25,8 @@ public class SpringbatchApplication {
 - 총 4개의 설정 클래스를 실행시키며 스프링 배치의 모든 초기화 및 실행 구성이 이루어진다.
 - 스프링 부트 배치의 자동 설정 클래스가 실행됨으로 빈으로 등록된 모든 Job 을 검색해서 초기화와 동시에 Job 을 수행하도록 구성된다.
 
-__스프링 배치 초기화 설정 클래스__   
+__스프링 배치 초기화 설정 클래스__    
+![image](https://user-images.githubusercontent.com/31242766/218739670-22c8437d-4232-4a06-b598-a671b7603f5b.png)   
 1. BatchAutoConfiguration
 - 스프링 배치가 초기화될 때 자동으로 실행되는 설정 클래스이다.
 - Job 을 수행하는 JobLauncherApplicationRunner 빈을 생성
