@@ -23,6 +23,7 @@
   - Application, Core 모두 공통 Infrastructure 위에서 빌드한다.
   - Job 실행의 흐름과 처리를 위한 틀을 제공한다.
   - Reader, Processor Writer, Skip, Retry 등이 속한다.
+  
 ## 목차
 * **[스프링 배치 시작](#스프링-배치-시작)**
   * **[프로젝트 구성 및 의존성 설정](#프로젝트-구성-및-의존성-설정)**
@@ -30,6 +31,7 @@
   * **[DB 스키마 생성 및 이해](#db-스키마-생성-및-이해)**
 * **[스프링 배치 도메인 이해](#스프링-배치-도메인-이해)**
   * **[Job](#job)**
+  * **[JobInstance](#jobinstance)**
   
 ## 스프링 배치 시작
 ### 프로젝트 구성 및 의존성 설정
@@ -188,8 +190,8 @@ __Step 관련 테이블__
 ## 스프링 배치 도메인 이해
 ### Job
 __1. 기본 개념__   
-- 배치 계층 구조에서 가장 상위에 있는 개념으로서 하나의 배치작업 자체를 의미함
-  - `API 서버의 접속 로그 데이터를 통계 서버로  옮기는 배치` 인 Job 자체를 의미한다. 
+- 배치 계층 구조에서 가장 상위에 있는 개념으로서 하나의 배치작업 자체를 의미한다.
+  - `API 서버의 접속 로그 데이터를 통계 서버로 옮기는 배치` 인 Job 자체를 의미한다. 
 - Job Configuration 을 통해 생성되는 객체 단위로서 배치작업을 어떻게 구성하고 실행할 것인지 전체적으로 설정하고 명세해 놓은 객체이다.
 - 배치 Job 을 구성하기 위한 최상위 인터페이스이며 스프링 배치가 기본 구현체를 제공한다.
 - 여러 Step 을 포함하고 있는 컨테이너로서 반드시 한개 이상의 Step으로 구성해야 한다.
@@ -203,3 +205,16 @@ __2. 기본 구현체__
   - Flow 객체를 실행시켜서 작업을 진행함
   
 ![image](https://user-images.githubusercontent.com/31242766/219631840-8c354f3c-3659-40a5-8140-f314623ab1c8.png)
+
+### JobInstance
+- Job 이 실행될 때 생성되는 Job 의 논리적 실행 단위 객체로서 고유하게 식별 가능한 작업 실행을 나타낸다.
+- Job 의 설정과 구성은 동일하지만 Job 이 실행되는 시점에 처리하는 내용은 다르기 때문에 Job 의 실행을 구분해야 한다.
+  - 예를 들어 하루에 한 번 씩 배치 Job이 실행된다면 매일 실행되는 각각의 Job 을 JobInstance 로 표현한다.
+- JobInstance 생성 및 실행
+  - 처음 시작하는 Job + JobParameter 일 경우 새로운 JobInstance 생성
+  - 이전과 동일한 Job + JobParameter 으로 실행 할 경우 이미 존재하는 JobInstance 리턴
+    - 내부적으로 JobName + jobKey (jobParametes 의 해시값) 를 가지고 JobInstance 객체를 얻는다.
+- Job 과는 1:M 관계
+
+![image](https://user-images.githubusercontent.com/31242766/220130667-967a96bb-39c2-4d2a-9cc5-8c764a0ee7d2.png)
+![image](https://user-images.githubusercontent.com/31242766/220130813-3943fd8c-328f-49e0-9e71-74016e799637.png)
