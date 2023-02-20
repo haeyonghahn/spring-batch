@@ -32,6 +32,7 @@
 * **[스프링 배치 도메인 이해](#스프링-배치-도메인-이해)**
   * **[Job](#job)**
   * **[JobInstance](#jobinstance)**
+  * **[JobParameter](#jobparameter)**
   
 ## 스프링 배치 시작
 ### 프로젝트 구성 및 의존성 설정
@@ -218,3 +219,22 @@ __2. 기본 구현체__
 
 ![image](https://user-images.githubusercontent.com/31242766/220130667-967a96bb-39c2-4d2a-9cc5-8c764a0ee7d2.png)
 ![image](https://user-images.githubusercontent.com/31242766/220130813-3943fd8c-328f-49e0-9e71-74016e799637.png)
+
+### JobParameter
+__기본 개념__   
+- Job을 실행할 때 함께 포함되어 사용되는 파라미터를 가진 도메인 객체이다.
+- 하나의 Job에 존재할 수 있는 여러개의 JobInstance를 구분하기 위한 용도이다.
+- JobParameters와 JobInstance는 1:1 관계
+
+__생성 및 바인딩__   
+- 어플리케이션 실행 시 주입
+  - Java -jar LogBatch.jar name=user1 seq(long)=2L date(date)=2021/01/01 age(double)=16.5
+- 코드로 생성
+  - JobParameterBuilder, DefaultJobParametersConverter
+- SpEL 이용 
+  - @Value(“#{jobParameter[requestDate]}”), @JobScope, @StepScope 선언 필수
+
+__BATCH_JOB_EXECUTION_PARAM 테이블과 매핑__   
+- JOB_EXECUTION 과 1:M 의 관계
+
+![image](https://user-images.githubusercontent.com/31242766/220138748-8dfce826-6c07-46c3-ae7f-e8147ff196c7.png)
