@@ -35,6 +35,7 @@
   * **[JobParameter](#jobparameter)**
   * **[JobExecution](#jobexecution)**
   * **[Step](#step)**
+  * **[StepExecution](#stepexecution)**
   
 ## 스프링 배치 시작
 ### 프로젝트 구성 및 의존성 설정
@@ -278,4 +279,23 @@ __기본 구현체__
 ![image](https://user-images.githubusercontent.com/31242766/221363023-91405db1-f27a-4975-ae37-7015b433cf86.png)
 ![image](https://user-images.githubusercontent.com/31242766/221363087-cee568c0-c2e5-4319-a953-28c805a0da0f.png)
 ![image](https://user-images.githubusercontent.com/31242766/221363129-2e3a0d75-e190-427c-ad2f-c4cfa82e3e2f.png)
+
+### StepExecution
+__기본 개념__   
+- Step 에 대한 한번의 시도를 의미하는 객체로서 Step 실행 중에 발생한 정보들을 저장하고 있는 객체이다.
+  - 시작시간, 종료시간, 상태(시작됨, 완료, 실패), commit count, rollback count 등의 속성을 가진다.
+- Step 이 매번 시도될 때마다 생성되며 각 Step 별로 생성된다.
+- Job 이 재시작하더라도 이미 성공적으로 완료된 Step은 재실행되지 않고 실패한 Step만 실행된다.
+- 이전 단계 Step이 실패해서 현재 Step을 실행하지 않았다면 StepExecution을 생성하지 않는다. Step이 실제로 시작됐을 때만 StepExecution을 생성한다.
+- JobExecution과의 관계
+  - Step의 StepExecution이 모두 정상적으로 완료되어야 JobExecution이 정상적으로 완료된다.
+  - Step의 StepExecution 중 하나라도 실패하면 JobExecution 은 실패한다.
+
+__BATCH_STEP_EXECUTION 테이블과 매핑__   
+- JobExecution 와 StepExecution 는 1:M 의 관계
+- 하나의 Job 에 여러 개의 Step 으로 구성했을 경우 각 StepExecution 은 하나의 JobExecution 을 부모로 가진다.
+
+![image](https://user-images.githubusercontent.com/31242766/221369727-21c6ec66-b5da-4081-8848-24129c06b9ee.png)
+![image](https://user-images.githubusercontent.com/31242766/221369744-719fadde-acc9-4cfb-890d-5ec2642b981b.png)
+![image](https://user-images.githubusercontent.com/31242766/221369795-06c4c5f9-8e76-422b-821e-957680842b4b.png)
 
