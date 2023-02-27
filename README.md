@@ -36,6 +36,8 @@
   * **[JobExecution](#jobexecution)**
   * **[Step](#step)**
   * **[StepExecution](#stepexecution)**
+  * **[StepContribution](#stepcontribution)**
+  * **[ExecutionContext](#executioncontext)**
   
 ## 스프링 배치 시작
 ### 프로젝트 구성 및 의존성 설정
@@ -299,3 +301,14 @@ __BATCH_STEP_EXECUTION 테이블과 매핑__
 ![image](https://user-images.githubusercontent.com/31242766/221369744-719fadde-acc9-4cfb-890d-5ec2642b981b.png)
 ![image](https://user-images.githubusercontent.com/31242766/221369795-06c4c5f9-8e76-422b-821e-957680842b4b.png)
 
+### StepContribution
+__기본 개념__   
+- 청크 프로세스의 변경 사항을 버퍼링 한 후 StepExecution 상태를 업데이트하는 도메인 객체이다.
+- 청크 커밋 직전에 StepExecution 의 apply 메서드를 호출하여 상태를 업데이트 한다.
+- ExitStatus 의 기본 종료코드 외 사용자 정의 종료코드를 생성해서 적용 할 수 있다.
+
+__구조__   
+![image](https://user-images.githubusercontent.com/31242766/221566083-ab985b58-9512-41e1-880a-e189d6b12390.png)
+![image](https://user-images.githubusercontent.com/31242766/221566127-c61f98ca-3395-40b0-92f7-455a9c878d66.png)
+
+### ExecutionContext
