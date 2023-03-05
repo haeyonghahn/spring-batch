@@ -312,3 +312,16 @@ __구조__
 ![image](https://user-images.githubusercontent.com/31242766/221566127-c61f98ca-3395-40b0-92f7-455a9c878d66.png)
 
 ### ExecutionContext
+__기본 개념__    
+- 프레임워크에서 유지 및 관리하는 키/값으로 된 컬렉션으로 StepExecution 또는 JobExecution 객체의 상태(state)를 저장하는 공유 객체이다.
+- DB 에 직렬화한 값으로 저장된다 -> { "key" : "value" }
+- 공유 범위   
+  - Step 범위 : 각 Step 의 StepExecution 에 저장되며 Step 간 서로 공유 안된다.
+  - Job 범위 : 각 Job의 JobExecution 에 저장되며 Job 간 서로 공유 안되며 해당 Job의 Step 간 서로 공유된다.
+- Job 재시작시 이미 처리한 Row 데이터는 건너뛰고 이후로 수행하도록 할 때 상태 정보를 활용한다.
+
+__구조__   
+![image](https://user-images.githubusercontent.com/31242766/222970008-8a6e8549-d98b-4b78-885d-12d996f234e2.png)
+![image](https://user-images.githubusercontent.com/31242766/222970172-fe2fdadf-d397-4ff1-9a31-84114763f3bf.png)
+![image](https://user-images.githubusercontent.com/31242766/222970194-89b17a93-edcf-4c64-8ed9-7b08cc637469.png)
+
