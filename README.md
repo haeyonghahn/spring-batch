@@ -38,7 +38,8 @@
   * **[StepExecution](#stepexecution)**
   * **[StepContribution](#stepcontribution)**
   * **[ExecutionContext](#executioncontext)**
-  * **[jobRepository](#jobRepository)**
+  * **[JobRepository](#jobrepository)**
+  * **[JobLauncher](#joblauncher)**
   
 ## 스프링 배치 시작
 ### 프로젝트 구성 및 의존성 설정
@@ -369,3 +370,25 @@ protected JobRepository createJobRepository() throws Exception {
     return factory.getObject();
 }
 ```
+
+### JobLauncher
+__기본 개념__   
+- 배치 Job을 실행시키는 역할을 한다.
+- Job과 Job Parameters를 인자로 받으며 요청된 배치 작업을 수행한 후 최종 client에게 JobExecution을 반환한다.
+- 스프링 부트 배치가 구동이 되면 JobLauncher 빈이 자동 생성된다.
+- Job 실행
+  - `JobLauncher.run(Job, JobParameters)`
+  - 스프링 부트 배치에서는 JobLauncherApplicationRunner가 자동적으로 JobLauncher을 실행시킨다.
+  - 동기적 실행
+    - taskExecutor를 SyncTaskExecutor 로 설정할 경우 (기본값은 SyncTaskExecutor)
+    - JobExecution을 획득하고 배치 처리를 최종 완료한 이후 Client 에게 JobExecution 을 반환한다.
+    - 스케줄러에 의한 배치처리에 적합하다 - 배치처리시간이 길어도 상관이 없는 경우
+  - 비동기적 실행
+    - taskExecutor가 SimpleAsyncTaskExecutor로 설정할 경우
+    - JobExecution을 획득한 후 Client에게 바로 JobExecution을 반환하고 배치처리를 완료한다.
+    - HTTP 요청에 의한 배치처리에 적합하다 - 배치처리 시간이 길 경우 응답이 늦어지지 않도록 한다.
+    
+__구조__   
+![image](https://user-images.githubusercontent.com/31242766/223416836-d8cd2101-3ce5-4089-aa60-52e74939313d.png)
+![image](https://user-images.githubusercontent.com/31242766/223416891-b3e59f45-f18a-4109-aea0-a9d3ae9b810b.png)
+
