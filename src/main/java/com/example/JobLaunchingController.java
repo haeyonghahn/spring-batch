@@ -34,6 +34,7 @@ public class JobLaunchingController {
                 .addDate("date", new Date())
                 .toJobParameters();
 
+//		SimpleJobLauncher jobLauncher = (SimpleJobLauncher)simpleLauncher;
         SimpleJobLauncher jobLauncher = (SimpleJobLauncher) basicBatchConfigurer.getJobLauncher();
         jobLauncher.setTaskExecutor(new SimpleAsyncTaskExecutor());
         jobLauncher.run(job, jobParameters);
