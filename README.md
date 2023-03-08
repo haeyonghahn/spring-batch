@@ -40,6 +40,8 @@
   * **[ExecutionContext](#executioncontext)**
   * **[JobRepository](#jobrepository)**
   * **[JobLauncher](#joblauncher)**
+* **[스프링 배치 실행 - Job](#스프링-배치-실행---job)**  
+  * **[배치 초기화 설정](#배치-초기화-설정)**
   
 ## 스프링 배치 시작
 ### 프로젝트 구성 및 의존성 설정
@@ -392,3 +394,28 @@ __구조__
 ![image](https://user-images.githubusercontent.com/31242766/223416836-d8cd2101-3ce5-4089-aa60-52e74939313d.png)
 ![image](https://user-images.githubusercontent.com/31242766/223416891-b3e59f45-f18a-4109-aea0-a9d3ae9b810b.png)
 
+## 스프링 배치 실행 - Job
+### 배치 초기화 설정
+__JobLauncherApplicationRunner__   
+- Spring Batch 작업을 시작하는 ApplicationRunner 로서 BatchAutoConfiguration 에서 생성된다.
+- 스프링 부트에서 제공하는 ApplicationRunner 의 구현체로 어플리케이션이 정상적으로 구동되자 마다 실행된다.
+- 기본적으로 빈으로 등록된 모든 job 을 실행시킨다.
+
+__BatchProperties__   
+- Spring Batch 의 환경 설정 클래스
+- Job 이름, 스키마 초기화 설정, 테이블 Prefix 등의 값을 설정할 수 있다.
+- application.properties, application.yml 파일에 설정한다.
+```yml
+batch:
+  job:
+    names: ${job.name:NONE}
+  initialize-schema: NEVER
+  tablePrefix: SYSTEM
+```
+
+__Job 실행 옵션__   
+- 지정한 Batch Job만 실행하도록 할 수 있다.
+- spring.batch.job.names: ${job.name:NONE}
+- 어플리케이션 실행 시 Program arguments 로 job 이름을 입력한다.
+  - `--job.name=helloJob`
+  - `--job.name=helloJob,simpleJob` (하나 이상의 job을 실행할 경우 쉼표로 구분해서 입력한다.)
