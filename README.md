@@ -42,6 +42,7 @@
   * **[JobLauncher](#joblauncher)**
 * **[스프링 배치 실행 - Job](#스프링-배치-실행---job)**  
   * **[배치 초기화 설정](#배치-초기화-설정)**
+  * **[JobBuilderFactory / JobBuilder](#jobbuilderFactory-jobbuilder)**
   
 ## 스프링 배치 시작
 ### 프로젝트 구성 및 의존성 설정
@@ -419,3 +420,25 @@ __Job 실행 옵션__
 - 어플리케이션 실행 시 Program arguments 로 job 이름을 입력한다.
   - `--job.name=helloJob`
   - `--job.name=helloJob,simpleJob` (하나 이상의 job을 실행할 경우 쉼표로 구분해서 입력한다.)
+
+### JobBuilderFactory / JobBuilder
+__스프링 배치는 Job 과 Step 을 쉽게 생성 및 설정할 수 있도록 util 성격의 빌더 클래스들을 제공한다.__   
+__JobBuilderFactory__   
+- JobBuilder 를 생성하는 팩토리 클래스로서 get(String name) 메서드 제공한다.
+- JobBuilderFactory.get("jobName")
+  - "jobName" 은 스프링 배치가 Job 을 실행시킬 때 참조하는 Job 이름이다.
+  
+__JobBuilder__   
+- Job 을 구성하는 설정 조건에 따라 두 개의 하위 빌더 클래스를 생성하고 실제 Job 생성을 위임한다.
+- SimpleJobBuilder
+  - SimpleJob 을 생성하는 Builder 클래스
+  - Job 실행과 관련된 여러 설정 API 를 제공한다.
+- FlowJobBuilder
+  - FlowJob 을 생성하는 Builder 클래스
+  - 내부적으로 FlowBuilder 를 반환함으로써 Flow 실행과 관련된 여러 설정 API 를 제공한다.
+  
+__아키텍처__   
+![image](https://user-images.githubusercontent.com/31242766/224045399-ec5781d6-529b-4443-9baa-624763e8a336.png)
+
+__클래스 상속 구조__   
+![image](https://user-images.githubusercontent.com/31242766/224045506-a5ba32d2-d8fb-4e38-a020-abb17c2d3964.png)
