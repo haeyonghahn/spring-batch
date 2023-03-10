@@ -43,6 +43,7 @@
 * **[스프링 배치 실행 - Job](#스프링-배치-실행---job)**  
   * **[배치 초기화 설정](#배치-초기화-설정)**
   * **[JobBuilderFactory / JobBuilder](#jobbuilderfactory--jobbuilder)**
+  * **[SimpleJob - 개념 및 API 소개](#simplejob---개념-및-api-소개)**
   
 ## 스프링 배치 시작
 ### 프로젝트 구성 및 의존성 설정
@@ -442,3 +443,13 @@ __아키텍처__
 
 __클래스 상속 구조__   
 ![image](https://user-images.githubusercontent.com/31242766/224045506-a5ba32d2-d8fb-4e38-a020-abb17c2d3964.png)
+
+### SimpleJob - 개념 및 API 소개
+__기본 개념__   
+- SimpleJob 은 Step 을 실행시키는 Job 구현체로서 SimpleJobBuilder 에 의해 생성된다.
+- 여러 단계의 Step 으로 구성할 수 있으며 Step 을 순차적으로 실행시킨다.
+- 모든 Step 의 실행이 성공적으로 완료되어야 Job 이 성공적으로 완료된다.
+- 맨 마지막에 실행한 Step 의 BatchStatus 가 Job 의 최종 BatchStatus 가 된다.
+
+__흐름__   
+![image](https://user-images.githubusercontent.com/31242766/224344663-7e69f07e-9398-4bef-b2b8-100e3652c064.png)
