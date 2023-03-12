@@ -44,6 +44,7 @@
   * **[배치 초기화 설정](#배치-초기화-설정)**
   * **[JobBuilderFactory / JobBuilder](#jobbuilderfactory--jobbuilder)**
   * **[SimpleJob - 개념 및 API 소개](#simplejob---개념-및-api-소개)**
+  * **[SimpleJob - start() / next()](#simplejob---start()---next())**
   
 ## 스프링 배치 시작
 ### 프로젝트 구성 및 의존성 설정
@@ -456,3 +457,17 @@ __흐름__
 ![image](https://user-images.githubusercontent.com/31242766/224354727-e9460fff-9bcd-44b7-915f-3d6c178b94bc.png)
 ![image](https://user-images.githubusercontent.com/31242766/224354770-89694bec-4538-46e5-a874-64cf0243b759.png)
 
+### SimpleJob - start() / next()
+```java
+public Job batchJob() {
+  return jobBuilderFactory.get("batchJob")
+      .start(Step)  //처음 실행 할 Step 설정, 최초 한번 설정, SimpleJobBuilder가 생성되고 반환된다.
+      .next(Step)   //다음에 실행 할 Step들을 순차적으로 연결하도록 설정한다.
+      .incrementer() //여러 번 설정이 가능하며 모든 next()의 Step이 종료가 되면 Job이 종료된다.
+      .validator()
+      .preventRestart()
+      .listener()
+      .build();
+}
+```
+![image](https://user-images.githubusercontent.com/31242766/224552504-377c6aec-b24c-4fb0-b62c-1c5d9f1420eb.png)
