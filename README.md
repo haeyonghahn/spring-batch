@@ -44,7 +44,7 @@
   * **[배치 초기화 설정](#배치-초기화-설정)**
   * **[JobBuilderFactory / JobBuilder](#jobbuilderfactory--jobbuilder)**
   * **[SimpleJob - 개념 및 API 소개](#simplejob---개념-및-api-소개)**
-  * **[SimpleJob - start() / next()](#simplejob---start()---next())**
+  * **[SimpleJob - start() / next()](#simplejob---start--next)**
   
 ## 스프링 배치 시작
 ### 프로젝트 구성 및 의존성 설정
