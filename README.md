@@ -45,6 +45,7 @@
   * **[JobBuilderFactory / JobBuilder](#jobbuilderfactory--jobbuilder)**
   * **[SimpleJob - 개념 및 API 소개](#simplejob---개념-및-api-소개)**
   * **[SimpleJob - start() / next()](#simplejob---start--next)**
+  * **[SimpleJob - validator()](#simplejob---validator)**
   
 ## 스프링 배치 시작
 ### 프로젝트 구성 및 의존성 설정
@@ -471,3 +472,26 @@ public Job batchJob() {
 }
 ```
 ![image](https://user-images.githubusercontent.com/31242766/224552504-377c6aec-b24c-4fb0-b62c-1c5d9f1420eb.png)
+
+### SimpleJob - validator()
+__기본 개념__   
+- Job 실행에 꼭 필요한 파라미터를 검증하는 용도
+- DefaultJobParametersValidator 구현체를 지원하며 좀 더 복잡한 제약 조건이 있다면 인터페이스를 직접 구현할 수도 있다.
+
+__구조__   
+![image](https://user-images.githubusercontent.com/31242766/224729410-186d9fd6-12bd-4404-af82-af8021d68d81.png)
+
+```java
+public Job batchJob() {
+    return jobBuilderFactory.get(“batchJob")
+      .start()
+      .next()
+      .incrementer()
+      .validator(JobParametersValidator)
+      .preventRestart()
+      .listener()
+      .build();
+}
+```
+__DefaultJobParametersValidator 흐름도__   
+![image](https://user-images.githubusercontent.com/31242766/224730488-31d682a3-f7ef-48b3-8a39-63a31eb49016.png)
