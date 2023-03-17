@@ -46,6 +46,7 @@
   * **[SimpleJob - 개념 및 API 소개](#simplejob---개념-및-api-소개)**
   * **[SimpleJob - start() / next()](#simplejob---start--next)**
   * **[SimpleJob - validator()](#simplejob---validator)**
+  * **[SimpleJob - preventRestart()](#simplejob---preventrestart)**
   
 ## 스프링 배치 시작
 ### 프로젝트 구성 및 의존성 설정
@@ -495,3 +496,14 @@ public Job batchJob() {
 ```
 __DefaultJobParametersValidator 흐름도__   
 ![image](https://user-images.githubusercontent.com/31242766/224730488-31d682a3-f7ef-48b3-8a39-63a31eb49016.png)
+
+### SimpleJob - preventRestart()
+__기본 개념__   
+- Job 의 재 시작 여부를 설정
+- 기본 값은 true 이며 false 로 설정 시 `Job은 재시작을 지원하지 않는다` 는 의미이다.
+- Job 이 실패해도 재 시작이 안되며 Job 을 재 시작하려고 하면 JobRestartException이 발생한다.
+- 재시작과 관련 있는 기능으로 Job 을 처음 실행하는 것과는 상관이 없다.
+
+__흐름도__   
+![image](https://user-images.githubusercontent.com/31242766/225856836-2e92d23a-5efe-4fd0-a5ac-fcb44463be71.png)
+- Job의 실행이 처음이 아닌 경우는 Job 의 성공/실패와 상관없이 preventRestart 설정 값에 따라서 실행 여부를 판단한다.
