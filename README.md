@@ -47,6 +47,8 @@
   * **[SimpleJob - start() / next()](#simplejob---start--next)**
   * **[SimpleJob - validator()](#simplejob---validator)**
   * **[SimpleJob - preventRestart()](#simplejob---preventrestart)**
+* **[스프링 배치 청크 프로세스 이해](#스프링-배치-청크-프로세스-이해)**
+  * **[Chunk](#chunk)**
   
 ## 스프링 배치 시작
 ### 프로젝트 구성 및 의존성 설정
@@ -507,3 +509,22 @@ __기본 개념__
 __흐름도__   
 ![image](https://user-images.githubusercontent.com/31242766/225856836-2e92d23a-5efe-4fd0-a5ac-fcb44463be71.png)
 - Job의 실행이 처음이 아닌 경우는 Job 의 성공/실패와 상관없이 preventRestart 설정 값에 따라서 실행 여부를 판단한다.
+
+## 스프링 배치 청크 프로세스 이해
+### Chunk
+__기본 개념__   
+- Chunk 란 여러 개의 아이템을 묶은 하나의 덩어리, 블록을 의미
+- 한번에 하나씩 아이템을 입력 받아 Chunk 단위의 덩어리로 만든 후 Chunk 단위로 트랜잭션을 처리함, 즉 Chunk 단위의 Commit 과 Rollback 이 이루어짐
+- 일반적으로 대용량 데이터를 한번에 처리하는 것이 아닌 청크 단위로 쪼개어서 더 이상 처리할 데이터가 없을 때까지 반복해서 입출력하는데 사용됨
+
+![image](https://user-images.githubusercontent.com/31242766/230384461-ef90ae7c-0c6c-4b66-bf24-4be7b3fdc579.png)
+
+- `Chunk<I>` vs `Chunk<O>`
+  - `Chunk<I>` 는 ItemReader 로 읽은 하나의 아이템을 Chunk 에서 정한 개수만큼 반복해서 저장하는 타입
+  - `Chunk<O>` 는 ItemReader 로부터 전달받은 `Chunk<I>` 를 참조해서 ItemProcessor 에서 적절하게 가공, 필터링한 다음 ItemWriter 에 전달하는 타입
+  
+![image](https://user-images.githubusercontent.com/31242766/230384677-4db69628-3189-43c1-a64e-a286f0911e54.png)
+
+![image](https://user-images.githubusercontent.com/31242766/230387123-b5972889-4397-447b-b611-34af5dbad8d9.png)
+
+![image](https://user-images.githubusercontent.com/31242766/230387424-7fb3b15a-e95a-41dd-8c11-faa6b1e9b86b.png)
