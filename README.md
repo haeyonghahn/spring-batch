@@ -49,6 +49,8 @@
   * **[SimpleJob - preventRestart()](#simplejob---preventrestart)**
 * **[스프링 배치 청크 프로세스 이해](#스프링-배치-청크-프로세스-이해)**
   * **[Chunk](#chunk)**
+  * **[ChunkOrientedTasklet](#chunkOrientedtasklet)**
+
   
 ## 스프링 배치 시작
 ### 프로젝트 구성 및 의존성 설정
@@ -524,7 +526,25 @@ __기본 개념__
   - `Chunk<O>` 는 ItemReader 로부터 전달받은 `Chunk<I>` 를 참조해서 ItemProcessor 에서 적절하게 가공, 필터링한 다음 ItemWriter 에 전달하는 타입
   
 ![image](https://user-images.githubusercontent.com/31242766/230384677-4db69628-3189-43c1-a64e-a286f0911e54.png)
-
 ![image](https://user-images.githubusercontent.com/31242766/230387123-b5972889-4397-447b-b611-34af5dbad8d9.png)
-
 ![image](https://user-images.githubusercontent.com/31242766/230387424-7fb3b15a-e95a-41dd-8c11-faa6b1e9b86b.png)
+
+### ChunkOrientedTasklet
+__기본 개념__   
+- ChunkOrientedTasklet 은 스프링 배치에서 제공하는 Tasklet 의 구현체로서 Chunk 지향 프로세싱를 담당하는 도메인 객체
+- ItemReader, ItemWriter, ItemProcessor 를  사용해 Chunk 기반의 데이터 입출력 처리를 담당한다.
+- TaskletStep 에 의해서 반복적으로 실행되며 ChunkOrientedTasklet 이 실행 될 때마다 매번 새로운 트랜잭션이 생성되어 처리가 이루어진다.
+- exception이 발생할 경우, 해당 Chunk는 롤백 되며 이전에 커밋한 Chunk는 완료된 상태가 유지된다.
+- 내부적으로 ItemReader 를 핸들링 하는 ChunkProvider 와 ItemProcessor, ItemWriter 를 핸들링하는 ChunkProcessor 타입의 구현체를 가진다.
+
+__구조__   
+![image](https://user-images.githubusercontent.com/31242766/230507134-b6bbcf85-19be-40ba-a2e3-e080ec1624a2.png)
+![image](https://user-images.githubusercontent.com/31242766/230507208-194e1fc1-8f7f-4bc1-baa7-2c660223e723.png)
+![image](https://user-images.githubusercontent.com/31242766/230507344-521c9ece-3f80-479e-9daa-c2ac148c76af.png)
+
+![image](https://user-images.githubusercontent.com/31242766/230507497-b15898ba-b2f8-429d-8065-37f28593fc74.png)
+![image](https://user-images.githubusercontent.com/31242766/230507531-bd8e5dfa-1ad1-45ca-891d-17011e0db339.png)
+
+
+
+
