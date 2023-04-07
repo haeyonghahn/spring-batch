@@ -543,8 +543,4 @@ __구조__
 ![image](https://user-images.githubusercontent.com/31242766/230507344-521c9ece-3f80-479e-9daa-c2ac148c76af.png)
 
 ![image](https://user-images.githubusercontent.com/31242766/230507497-b15898ba-b2f8-429d-8065-37f28593fc74.png)
-![image](https://user-images.githubusercontent.com/31242766/230507531-bd8e5dfa-1ad1-45ca-891d-17011e0db339.png)
-
-
-
-
+![image](https://user-images.githubusercontent.com/31242766/230630361-e1947edb-5327-469c-a914-9fa1e1cc86bc.png)
