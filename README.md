@@ -50,6 +50,7 @@
 * **[스프링 배치 청크 프로세스 이해](#스프링-배치-청크-프로세스-이해)**
   * **[Chunk](#chunk)**
   * **[ChunkOrientedTasklet](#chunkOrientedtasklet)**
+  * **[ChunkProvider](#chunkprovider)**
 
   
 ## 스프링 배치 시작
@@ -532,7 +533,7 @@ __기본 개념__
 ### ChunkOrientedTasklet
 __기본 개념__   
 - ChunkOrientedTasklet 은 스프링 배치에서 제공하는 Tasklet 의 구현체로서 Chunk 지향 프로세싱를 담당하는 도메인 객체
-- ItemReader, ItemWriter, ItemProcessor 를  사용해 Chunk 기반의 데이터 입출력 처리를 담당한다.
+- ItemReader, ItemWriter, ItemProcessor 를 사용해 Chunk 기반의 데이터 입출력 처리를 담당한다.
 - TaskletStep 에 의해서 반복적으로 실행되며 ChunkOrientedTasklet 이 실행 될 때마다 매번 새로운 트랜잭션이 생성되어 처리가 이루어진다.
 - exception이 발생할 경우, 해당 Chunk는 롤백 되며 이전에 커밋한 Chunk는 완료된 상태가 유지된다.
 - 내부적으로 ItemReader 를 핸들링 하는 ChunkProvider 와 ItemProcessor, ItemWriter 를 핸들링하는 ChunkProcessor 타입의 구현체를 가진다.
@@ -544,3 +545,15 @@ __구조__
 
 ![image](https://user-images.githubusercontent.com/31242766/230507497-b15898ba-b2f8-429d-8065-37f28593fc74.png)
 ![image](https://user-images.githubusercontent.com/31242766/230630361-e1947edb-5327-469c-a914-9fa1e1cc86bc.png)
+
+### ChunkProvider
+__기본 개념__   
+- ItemReader 를 사용해서 소스로부터 아이템을 Chunk size 만큼 읽어서 Chunk 단위로 만들어 제공하는 도메인 객체이다.
+- `Chunk<I>` 를 만들고 내부적으로 반복문을 사용해서 ItemReader.read() 를 계속 호출하면서 item 을 Chunk 에 쌓는다.
+- 외부로 부터 ChunkProvider 가 호출될 때마다 항상 새로운 Chunk 가 생성된다.
+- 반복문 종료 시점
+  - Chunk size 만큼 item 을 읽으면 반복문 종료되고 ChunkProcessor 로 넘어간다.
+  - ItemReader 가 읽은 item 이 null 일 경우 반복문 종료 및 해당 Step 반복문까지 종료된다.
+  - 기본 구현체로서 SimpleChunkProvider 와 FaultTolerantChunkProvider 가 있다.
+  
+![image](https://user-images.githubusercontent.com/31242766/230769116-193abf12-6611-48c0-a133-645de830a735.png)
