@@ -52,6 +52,7 @@
   * **[ChunkOrientedTasklet](#chunkOrientedtasklet)**
   * **[ChunkProvider](#chunkprovider)**
   * **[ChunkProcessor](#chunkprocessor)**
+  * **[ItemReader](#itemReader)**
   
 ## 스프링 배치 시작
 ### 프로젝트 구성 및 의존성 설정
@@ -573,3 +574,29 @@ __구조__
 ![image](https://user-images.githubusercontent.com/31242766/230898781-cf9dbefa-f44f-4062-8337-563e341d69a9.png)
 
 ![image](https://user-images.githubusercontent.com/31242766/230898875-19c2beb9-01db-435b-8527-fcbeb32a955c.png)
+
+### ItemReader
+__기본 개념__    
+- 다양한 입력으로부터 데이터를 읽어서 제공하는 인터페이스
+  - 플랫(Flat) 파일 – csv, txt (고정 위치로 정의된 데이터 필드나 특수문자로 구별된 데이터의 행)
+  - XML, Json
+  - Database
+  - JMS, RabbitMQ 와 같은 Messag Queuing 서비스
+  - Custom Reader - 구현 시 멀티 스레드 환경에서 스레드에 안전하게 구현할 필요가 있음
+- ChunkOrientedTasklet 실행 시 필수적 요소로 설정해야 한다.
+
+__구조__   
+![image](https://user-images.githubusercontent.com/31242766/230923523-1df30da2-89ff-4d0a-9f28-b33be629a33a.png)
+
+__T read()__   
+- 입력 데이터를 읽고 다음 데이터로 이동한다.
+- 아이템 하나를 리턴하며 더 이상 아이템이 없는 경우 null 리턴.
+- 아이템 하나는 파일의 한줄, DB 의 한 row 혹은 XML 파일에서 하나의 엘리먼트가 될 수 있다.
+- 더 이상 처리해야 할 Item 이 없어도 예외가 발생하지 않고 ItemProcessor 와 같은 다음 단계로 넘어 간다.
+
+![image](https://user-images.githubusercontent.com/31242766/230928920-57b57655-5340-45f1-b93b-e9cd95d75a30.png)    
+
+- 다수의 구현체들이 ItemReader 와 ItemStream 인터페이스를 동시에 구현하고 있음
+  - 파일의 스트림을 열거나 종료, DB 커넥션을 열거나 종료, 입력 장치 초기화 등의 작업
+  - ExecutionContext 에 read 와 관련된 여러가지 상태 정보를 저장해서 재시작 시 다시 참조 하도록 지원
+- 일부를 제외하고 하위 클래스들은 기본적으로 스레드에 안전하지 않기 때문에 병렬 처리시 데이터 정합성을 위한 동기화 처리 필요
