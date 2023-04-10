@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
@@ -17,7 +18,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Configuration
-public class ChunkOrientedTaskletConfiguration {
+public class ChunkProviderChunkProcessorConfiguration {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
@@ -31,6 +32,7 @@ public class ChunkOrientedTaskletConfiguration {
     }
 
     @Bean
+    @JobScope
     public Step step1() {
         return stepBuilderFactory.get("step1")
                 .<String, String>chunk(2)
