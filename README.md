@@ -600,3 +600,5 @@ __T read()__
   - 파일의 스트림을 열거나 종료, DB 커넥션을 열거나 종료, 입력 장치 초기화 등의 작업
   - ExecutionContext 에 read 와 관련된 여러가지 상태 정보를 저장해서 재시작 시 다시 참조 하도록 지원
 - 일부를 제외하고 하위 클래스들은 기본적으로 스레드에 안전하지 않기 때문에 병렬 처리시 데이터 정합성을 위한 동기화 처리 필요
+
+![image](https://user-images.githubusercontent.com/31242766/231192463-a2c05aaf-347c-4d2c-a94e-37ddcefb4212.png)
