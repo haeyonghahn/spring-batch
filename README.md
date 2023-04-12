@@ -53,6 +53,7 @@
   * **[ChunkProvider](#chunkprovider)**
   * **[ChunkProcessor](#chunkprocessor)**
   * **[ItemReader](#itemReader)**
+  * **[ItemWriter](#itemwriter)**
   
 ## 스프링 배치 시작
 ### 프로젝트 구성 및 의존성 설정
@@ -602,3 +603,28 @@ __T read()__
 - 일부를 제외하고 하위 클래스들은 기본적으로 스레드에 안전하지 않기 때문에 병렬 처리시 데이터 정합성을 위한 동기화 처리 필요
 
 ![image](https://user-images.githubusercontent.com/31242766/231192463-a2c05aaf-347c-4d2c-a94e-37ddcefb4212.png)
+
+### ItemWriter
+__기본 개념__   
+- Chunk 단위로 데이터를 받아 일괄 출력 작업을 위한 인터페이스
+  - 플랫(Flat) 파일 – csv, txt
+  - XML, Json
+  - Database
+  - JMS, RabbitMQ 와 같은 Messag Queuing 서비스
+  - Mail Service
+  - Custom Writer
+- 아이템 하나가 아닌 아이템 리스트를 전달 받는다. 
+- ChunkOrientedTasklet 실행 시 필수적 요소로 설정해야 한다.
+
+__구조__   
+![image](https://user-images.githubusercontent.com/31242766/231194039-54f24b85-75bb-4d92-8a00-9f74dab65677.png)
+
+- void write(List<? extends T> items)
+  - 출력 데이터를 아이템 리스트로 받아 처리한다.
+  - 출력이 완료되고 트랜잭션이 종료되면 새로운 Chunk 단위 프로세스로 이동한다.
+
+![image](https://user-images.githubusercontent.com/31242766/231207039-31cfc7cb-3cc3-469b-9539-bd34614e0827.png)
+
+- 다수의 구현체들이 ItemWriter 와 ItemStream 을 동시에 구현하고 있다.
+  - 파일의 스트림을 열거나 종료, DB 커넥션을 열거나 종료, 출력 장치 초기화 등의 작업
+- 보통 ItemReader 구현체와 1:1 대응 관계인 구현체들로 구성되어 있다.
