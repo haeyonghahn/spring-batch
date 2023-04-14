@@ -54,6 +54,7 @@
   * **[ChunkProcessor](#chunkprocessor)**
   * **[ItemReader](#itemReader)**
   * **[ItemWriter](#itemwriter)**
+  * **[ItemReader](itemreader)**
   
 ## 스프링 배치 시작
 ### 프로젝트 구성 및 의존성 설정
@@ -628,3 +629,13 @@ __구조__
 - 다수의 구현체들이 ItemWriter 와 ItemStream 을 동시에 구현하고 있다.
   - 파일의 스트림을 열거나 종료, DB 커넥션을 열거나 종료, 출력 장치 초기화 등의 작업
 - 보통 ItemReader 구현체와 1:1 대응 관계인 구현체들로 구성되어 있다.
+
+### ItemReader
+__기본 개념__   
+- 다양한 입력으로부터 데이터를 읽어서 제공하는 인터페이스
+  - 플랫(Flat) 파일 – csv, txt (고정 위치로 정의된 데이터 필드나 특수문자로 구별된 데이터의 행)
+  - XML, Json
+  - Database
+  - JMS, RabbitMQ 와 같은 Messag Queuing 서비스
+  - Custom Reader - 구현 시 멀티 스레드 환경에서 스레드에 안전하게 구현할 필요가 있음
+- ChunkOrientedTasklet 실행 시 필수적 요소로 설정해야 한다.
