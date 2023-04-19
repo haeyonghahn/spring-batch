@@ -54,6 +54,7 @@
   * **[ChunkProcessor](#chunkprocessor)**
   * **[ItemReader](#itemReader)**
   * **[ItemWriter](#itemwriter)**
+  * **[ItemProcessor](#itemprocessor)**
   
 ## 스프링 배치 시작
 ### 프로젝트 구성 및 의존성 설정
@@ -630,3 +631,12 @@ __구조__
 - 보통 ItemReader 구현체와 1:1 대응 관계인 구현체들로 구성되어 있다.
 
 ![image](https://user-images.githubusercontent.com/31242766/232785648-6f63ccfa-cd14-45a9-bf4e-e188a9e4dc84.png)
+
+### ItemProcessor
+__기본 개념__
+- 데이터를 출력하기 전에 데이터를 가공, 변형, 필터링하는 역할
+- ItemReader 및 ItemWriter 와 분리되어 비즈니스 로직을 구현할 수 있다.
+- ItemReader 로 부터 받은 아이템을 특정 타입으로 변환해서 ItemWriter에 넘겨 줄 수 있다.
+- ItemReader 로 부터 받은 아이템들 중 필터과정을 거쳐 원하는 아이템들만 ItemWriter 에게 넘겨줄 수 있다.
+  - ItemProcessor 에서 process() 실행결과 null을 반환하면 Chunk<O> 에 저장되지 않기 때문에 결국 ItemWriter에 전달되지 않는다
+- ChunkOrientedTasklet 실행 시 선택적 요소이기 때문에 청크 기반 프로세싱에서 ItemProcessor 단계가 반드시 필요한 것은 아니다.
