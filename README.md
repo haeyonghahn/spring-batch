@@ -640,3 +640,17 @@ __기본 개념__
 - ItemReader 로 부터 받은 아이템들 중 필터과정을 거쳐 원하는 아이템들만 ItemWriter 에게 넘겨줄 수 있다.
   - ItemProcessor 에서 process() 실행결과 null을 반환하면 Chunk<O> 에 저장되지 않기 때문에 결국 ItemWriter에 전달되지 않는다
 - ChunkOrientedTasklet 실행 시 선택적 요소이기 때문에 청크 기반 프로세싱에서 ItemProcessor 단계가 반드시 필요한 것은 아니다.
+
+__구조__   
+![image](https://user-images.githubusercontent.com/31242766/233120221-d6a08d51-74c0-44e5-8a29-445606ccc0eb.png)
+
+- O process
+  - `<I>` 제네릭은 ItemReader에서 받을 데이터 타입 지정
+  - `<O>` 제네릭은 ItemWriter 에게 보낼 데이터 타입 지정
+  - 아이템 하나씩 가공 처리하며 null 리턴할 경우 해당 아이템은 `Chunk<O>` 에 저장되지 않음
+
+![image](https://user-images.githubusercontent.com/31242766/233120485-32a4be82-3fca-47ff-b128-e3b7c81e4c7c.png)
+- ItemStream 을 구현하지 않는다.
+- 거의 대부분 Customizing 해서 사용하기 때문에 기본적으로 제공되는 구현체가 적다.
+
+![image](https://user-images.githubusercontent.com/31242766/233120653-9effbba4-fc8b-4674-9307-92172d043efb.png)
