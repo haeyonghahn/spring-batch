@@ -55,6 +55,7 @@
   * **[ItemReader](#itemReader)**
   * **[ItemWriter](#itemwriter)**
   * **[ItemProcessor](#itemprocessor)**
+  * **[ItemStream](#itemstream)**
   
 ## 스프링 배치 시작
 ### 프로젝트 구성 및 의존성 설정
@@ -654,3 +655,15 @@ __구조__
 - 거의 대부분 Customizing 해서 사용하기 때문에 기본적으로 제공되는 구현체가 적다.
 
 ![image](https://user-images.githubusercontent.com/31242766/233120653-9effbba4-fc8b-4674-9307-92172d043efb.png)
+
+### ItemStream
+__기본 개념__   
+- ItemReader 와 ItemWriter 처리 과정 중 상태를 저장하고 오류가 발생하면 해당 상태를 참조하여 실패한 곳에서 재 시작 하도록 지원
+- 리소스를 열고(open) 닫아야(close) 하며 입출력 장치 초기화 등의 작업을 해야 하는 경우
+- ExecutionContext 를 매개변수로 받아서 상태 정보를 업데이트(update) 한다
+- ItemReader 및 ItemWriter 는 ItemStream 을 구현해야 한다.
+
+__구조__    
+![image](https://user-images.githubusercontent.com/31242766/234208999-3be78f45-0b81-41b1-9a5d-8dc2b4fe3a30.png)
+
+![image](https://user-images.githubusercontent.com/31242766/234209335-37896e78-a271-4dba-bc0a-0b1ee1464cfb.png)
