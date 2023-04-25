@@ -57,6 +57,8 @@
   * **[ItemProcessor](#itemprocessor)**
   * **[ItemStream](#itemstream)**
   * **[Chunk Process 아키텍처](#chunk-process-아키텍처)**
+* **[스프링 배치 청크 프로세스 활용 - ItemReader](#스프링-배치-청크-프로세스-활용---itemreader)**
+  * **[FlatFileItemReader - 개념 및 API 소개](#flatfileitemreader---개념-및-api-소개)**
   
 ## 스프링 배치 시작
 ### 프로젝트 구성 및 의존성 설정
@@ -672,3 +674,56 @@ __구조__
 ### Chunk Process 아키텍처
 ![image](https://user-images.githubusercontent.com/31242766/234240577-53f8f743-3132-456e-bdf6-1010c4c18047.png)
 ![image](https://user-images.githubusercontent.com/31242766/234240639-04f0eba8-347d-45ba-b56a-7da26ad724c5.png)
+
+## 스프링 배치 청크 프로세스 활용 - ItemReader
+### FlatFileItemReader - 개념 및 API 소개
+__기본 개념__   
+- 2차원 데이터(표)로 표현된 유형의 파일을 처리하는 ItemReader
+- 일반적으로 고정 위치로 정의된 데이터 필드나 특수 문자에 의해 구별된 데이터의 행을 읽는다.
+- Resource 와 LineMapper 두 가지 요소가 필요하다.
+
+__구조__    
+![image](https://user-images.githubusercontent.com/31242766/234244335-4b988cf9-1c16-4e3a-aecf-3f5598e63af1.png)
+
+- Resource
+  - FileSystemResource – new FileSystemResource("resource/path/config.xml")
+  - ClassPathResource – new ClassPathResource("classpath:path/config.xml")
+
+- LineMapper
+  - 파일의 라인 한줄을 Object 로 변환해서 FlatFileItemReader 로 리턴한다.
+  - 단순히 문자열을 받기 때문에 문자열을 토큰화해서 객체로 매핑하는 과정이 필요하다.
+  - LineTokenizer 와 FieldSetMapper 를 사용해서 처리한다.
+  - FieldSet
+    - 라인을 필드로 구분해서 만든 배열 토큰을 전달하면 토큰 필드를 참조 할수 있도록 한다
+    - JDBC 의 ResultSet 과 유사하다 ex) fs.readString(0), fs.readString("name")
+  - LineTokenizer
+    - 입력받은 라인을 FieldSet 으로 변환해서 리턴한다.
+    - 파일마다 형식이 다르기 때문에 문자열을 FieldSet 으로 변환하는 작업을 추상화시켜야 한다. 
+  - FieldSetMapper
+    - FieldSet 객체를 받아서 원하는 객체로 매핑해서 리턴한다.
+    - JdbcTemplate 의 RowMapper 와 동일한 패턴을 사용한다.
+
+![image](https://user-images.githubusercontent.com/31242766/234246374-0f5498d2-015d-4ace-804a-82dde87708d9.png)
+![image](https://user-images.githubusercontent.com/31242766/234246624-20ec6c98-7f46-48de-a669-690f573518df.png)
+
+```java
+public FlatFileItemReader itemReader() {
+  return new FlatFileItemReaderBuilder<T>()
+    .name(String name)                  // 이름 설정, ExecutionContext 내에서 구분하기 위한 key 로 저장
+    .resource(Resource)	                // 읽어야 할 리소스 설정
+    .delimited().delimiter("|")         // 파일의 구분자를 기준으로 파일을 읽어들이는 설정
+    .fixedLength()                      // 파일의 고정길이를 기준으로 파일을 읽어들이는 설정
+    .addColumns(Range..)                // 고정길이 범위를 정하는 설정
+    .names(String[] fieldNames)         // LineTokenizer 로 구분된 라인의 항목을 객체의 필드명과 매핑하도록 설정
+    .targetType(Class class)            // 라인의 각 항목과 매핑할 객체 타입 설정
+    .addComment(String Comment)         // 무시할 라인의 코멘트 기호 설정
+    .strict(boolean)                    // 라인을 읽거나 토큰화 할 때 Parsing 예외가 발생하지 않도록 검증 생략하도록 설정
+    .encoding(String encoding)          // 파일 인코딩 설정
+    .linesToSkip(int linesToSkip)       // 파일 상단에 있는 무시할 라인 수 설정
+    .saveState(boolean)                 // 상태정보를 저장할 것인지 설정
+    .setLineMapper(LineMapper)          // LineMapper 객체 설정
+    .setFieldSetMapper(FieldSetMapper)  // FieldSetMapper 객체 설정
+    .setLineTokenizer(LineTokenizer)    // LineTokenizer 객체 설정
+    .build();
+}
+```
