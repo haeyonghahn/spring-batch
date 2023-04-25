@@ -672,4 +672,3 @@ __구조__
 ### Chunk Process 아키텍처
 ![image](https://user-images.githubusercontent.com/31242766/234240577-53f8f743-3132-456e-bdf6-1010c4c18047.png)
 ![image](https://user-images.githubusercontent.com/31242766/234240639-04f0eba8-347d-45ba-b56a-7da26ad724c5.png)
-
