@@ -56,6 +56,7 @@
   * **[ItemWriter](#itemwriter)**
   * **[ItemProcessor](#itemprocessor)**
   * **[ItemStream](#itemstream)**
+  * **[Chunk Process 아키텍처](#chunk-process-아키텍처)**
   
 ## 스프링 배치 시작
 ### 프로젝트 구성 및 의존성 설정
@@ -667,3 +668,8 @@ __구조__
 ![image](https://user-images.githubusercontent.com/31242766/234208999-3be78f45-0b81-41b1-9a5d-8dc2b4fe3a30.png)
 
 ![image](https://user-images.githubusercontent.com/31242766/234209335-37896e78-a271-4dba-bc0a-0b1ee1464cfb.png)
+
+### Chunk Process 아키텍처
+![image](https://user-images.githubusercontent.com/31242766/234240577-53f8f743-3132-456e-bdf6-1010c4c18047.png)
+![image](https://user-images.githubusercontent.com/31242766/234240639-04f0eba8-347d-45ba-b56a-7da26ad724c5.png)
+
