@@ -47,6 +47,7 @@
   * **[SimpleJob - start() / next()](#simplejob---start--next)**
   * **[SimpleJob - validator()](#simplejob---validator)**
   * **[SimpleJob - preventRestart()](#simplejob---preventrestart)**
+  * **[SimpleJob - incrementer()](#simplejob---incrementer)**
 * **[스프링 배치 청크 프로세스 이해](#스프링-배치-청크-프로세스-이해)**
   * **[Chunk](#chunk)**
   * **[ChunkOrientedTasklet](#chunkOrientedtasklet)**
@@ -519,6 +520,17 @@ __기본 개념__
 __흐름도__   
 ![image](https://user-images.githubusercontent.com/31242766/225856836-2e92d23a-5efe-4fd0-a5ac-fcb44463be71.png)
 - Job의 실행이 처음이 아닌 경우는 Job 의 성공/실패와 상관없이 preventRestart 설정 값에 따라서 실행 여부를 판단한다.
+
+### SimpleJob - incrementer()
+__기본 개념__   
+- JobParameters 에서 필요한 값을 증가시켜 다음에 사용될 JobParameters 오브젝트를 리턴
+- 기존의 JobParameter 변경없이 Job을 여러 번 시작하고자 할 때
+- RunIdIncrementer 구현체를 지원하면 인터페이스를 직접 구현할 수 있다.
+
+![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/88d3c570-2068-4cb0-8c43-88068b3e2685)
+
+__구조__   
+![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/b12d69f0-92e4-4ffb-b6dc-deb49b77e6d6)
 
 ## 스프링 배치 청크 프로세스 이해
 ### Chunk
