@@ -48,6 +48,8 @@
   * **[SimpleJob - validator()](#simplejob---validator)**
   * **[SimpleJob - preventRestart()](#simplejob---preventrestart)**
   * **[SimpleJob - incrementer()](#simplejob---incrementer)**
+* **[스프링 배치 실행 - Flow](#스프링-배치-실행---flow)**
+  * **[FlowJob - 개념 및 API 소개](#flowjob---개념-및-api-소개)** 
 * **[스프링 배치 청크 프로세스 이해](#스프링-배치-청크-프로세스-이해)**
   * **[Chunk](#chunk)**
   * **[ChunkOrientedTasklet](#chunkOrientedtasklet)**
@@ -529,8 +531,8 @@ __기본 개념__
 
 ![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/88d3c570-2068-4cb0-8c43-88068b3e2685)
 
-__구조__   
-![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/b12d69f0-92e4-4ffb-b6dc-deb49b77e6d6)
+## 스프링 배치 실행 - Flow
+### FlowJob - 개념 및 API 소개
 
 ## 스프링 배치 청크 프로세스 이해
 ### Chunk
