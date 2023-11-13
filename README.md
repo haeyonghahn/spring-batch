@@ -49,7 +49,8 @@
   * **[SimpleJob - preventRestart()](#simplejob---preventrestart)**
   * **[SimpleJob - incrementer()](#simplejob---incrementer)**
 * **[스프링 배치 실행 - Flow](#스프링-배치-실행---flow)**
-  * **[FlowJob - 개념 및 API 소개](#flowjob---개념-및-api-소개)** 
+  * **[FlowJob - 개념 및 API 소개](#flowjob---개념-및-api-소개)**
+  * **[FlowJob - start() / next()](#FlowJob---start--next)**
 * **[스프링 배치 청크 프로세스 이해](#스프링-배치-청크-프로세스-이해)**
   * **[Chunk](#chunk)**
   * **[ChunkOrientedTasklet](#chunkOrientedtasklet)**
@@ -533,6 +534,35 @@ __기본 개념__
 
 ## 스프링 배치 실행 - Flow
 ### FlowJob - 개념 및 API 소개
+__기본개념__    
+- Step 을 순차적으로만 구성하는 것이 아닌 특정한 상태에 따라 흐름을 전환하도록 구성할 수 있으며 FlowJobBuilder 에 의해 생성된다.
+  - Step 이 실패 하더라도 Job 은 실패로 끝나지 않도록 해야 하는 경우
+  - Step 이 성공 했을 때 다음에 실행해야 할 Step 을 구분해서 실행 해야 하는경우
+  - 특정 Step 은 전혀 실행되지 않게 구성 해야 하는 경우
+- Flow 와 Job 의 흐름을 구성하는데만 관여하고 실제 비즈니스 로직은 Step 에서 이루어진다.
+- 내부적으로 SimpleFlow 객체를 포함하고 있으며 Job 실행 시 호출한다.
+
+__SimpleJob vs FlowJob__    
+![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/3e755e7a-b7eb-4a9e-8d8d-50c1ea834d1c)
+
+```java
+public Job batchJob() {
+  return jobBuilderFactory.get(“batchJob")
+	  .start(Step)                            // Flow 시작하는 Step 설정
+	  .on(String pattern)                     // Step의 실행 결과로 돌려받는 종료상태 (ExitStatus)를 캐치하여 매칭하는 패턴, TransitionBuilder 반환
+	  .to(Step)                               // 다음으로 이동할 Step 지정
+	  .stop()                                 // fail(), end(), stopAndRestart()	
+	  .from(Step)                             // 이전 단계에서 정의한 Step의 Flow를 추가적으로 정의함
+    .next(Step)                             // 다음으로 이동할 Step 지정
+	  .end()                                  // build() 앞에 위치하면 FlowBuilder를 종료하고 SimpleFlow 객체 생성
+	  .build()                                // FlowJob 생성하고 flow 필드에 SimpleFlow 저장
+}
+```
+
+- FlowBuilder 의 on(String pattern) 메서드를 호출하게 되면 TransitionBuilder 가 작동하게 되면서 Step 간 조건부 전환을 구성할 수 있게 된다.
+![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/dae99f20-452b-421b-8569-64fa4a23b67e)
+
+### FlowJob - start() / next()
 
 ## 스프링 배치 청크 프로세스 이해
 ### Chunk
