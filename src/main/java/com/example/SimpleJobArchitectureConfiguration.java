@@ -4,6 +4,7 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Configuration
-public class IncrementerConfiguration {
+public class SimpleJobArchitectureConfiguration {
 
 	private final JobBuilderFactory jobBuilderFactory;
 	private final StepBuilderFactory stepBuilderFactory;
@@ -20,11 +21,10 @@ public class IncrementerConfiguration {
 	@Bean
 	public Job batchJob() {
 		return this.jobBuilderFactory.get("batchJob")
-			//                .incrementer(new RunIdIncrementer())
-			.incrementer(new CustomJobParametersIncrementer())
+			.incrementer(new RunIdIncrementer())
 			.start(step1())
 			.next(step2())
-			.next(step3())
+			.listener(new CustomJobListener())
 			.build();
 	}
 
@@ -42,15 +42,6 @@ public class IncrementerConfiguration {
 		return stepBuilderFactory.get("step2")
 			.tasklet((contribution, chunkContext) -> {
 				System.out.println("step2 has executed");
-				return RepeatStatus.FINISHED;
-			})
-			.build();
-	}
-	@Bean
-	public Step step3() {
-		return stepBuilderFactory.get("step3")
-			.tasklet((contribution, chunkContext) -> {
-				System.out.println("step3 has executed");
 				return RepeatStatus.FINISHED;
 			})
 			.build();
