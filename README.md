@@ -530,7 +530,7 @@ __기본 개념__
 - 기존의 JobParameter 변경없이 Job을 여러 번 시작하고자 할 때
 - RunIdIncrementer 구현체를 지원하면 인터페이스를 직접 구현할 수 있다.
 
-![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/88d3c570-2068-4cb0-8c43-88068b3e2685)
+![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/ac3d345c-6737-4de4-a30f-24e18fe71907)
 
 ## 스프링 배치 실행 - Flow
 ### FlowJob - 개념 및 API 소개
@@ -542,8 +542,8 @@ __기본개념__
 - Flow 와 Job 의 흐름을 구성하는데만 관여하고 실제 비즈니스 로직은 Step 에서 이루어진다.
 - 내부적으로 SimpleFlow 객체를 포함하고 있으며 Job 실행 시 호출한다.
 
-__SimpleJob vs FlowJob__    
-![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/3e755e7a-b7eb-4a9e-8d8d-50c1ea834d1c)
+__SimpleJob vs FlowJob__     
+![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/8f321586-cf3d-4176-870b-fde0884c1759)
 
 ```java
 public Job batchJob() {
@@ -560,7 +560,7 @@ public Job batchJob() {
 ```
 
 - FlowBuilder 의 on(String pattern) 메서드를 호출하게 되면 TransitionBuilder 가 작동하게 되면서 Step 간 조건부 전환을 구성할 수 있게 된다.
-![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/dae99f20-452b-421b-8569-64fa4a23b67e)
+![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/8e64f4ae-9da3-47ff-a33c-5cd765c4602c)
 
 ### FlowJob - start() / next()
 
