@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Configuration
-public class StartNextConfiguration {
+public class ValidatorConfiguration {
 
 	private final JobBuilderFactory jobBuilderFactory;
 	private final StepBuilderFactory stepBuilderFactory;
@@ -20,6 +20,8 @@ public class StartNextConfiguration {
 	@Bean
 	public Job batchJob() {
 		return this.jobBuilderFactory.get("batchJob")
+			.validator(new CustomJobParametersValidator())
+		   // .validator(new DefaultJobParametersValidator(new String[]{"name"},new String[]{"year"}))
 			.start(step1())
 			.next(step2())
 			.next(step3())
