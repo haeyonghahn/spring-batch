@@ -48,6 +48,7 @@
   * **[SimpleJob - validator()](#simplejob---validator)**
   * **[SimpleJob - preventRestart()](#simplejob---preventrestart)**
   * **[SimpleJob - incrementer()](#simplejob---incrementer)**
+  * **[SimpleJob 아키텍처](#simplejob-아키텍처)**
 * **[스프링 배치 실행 - Flow](#스프링-배치-실행---flow)**
   * **[FlowJob - 개념 및 API 소개](#flowjob---개념-및-api-소개)**
   * **[FlowJob - start() / next()](#FlowJob---start--next)**
@@ -531,6 +532,12 @@ __기본 개념__
 - RunIdIncrementer 구현체를 지원하면 인터페이스를 직접 구현할 수 있다.
 
 ![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/ac3d345c-6737-4de4-a30f-24e18fe71907)
+
+### SimpleJob 아키텍처
+![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/a3d48e2c-d373-4261-8067-3bd76a24f393)
+
+__클래스 상속 관계도__   
+![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/a8690700-11e1-4148-81bf-f8b51a25b73c)
 
 ## 스프링 배치 실행 - Flow
 ### FlowJob - 개념 및 API 소개
