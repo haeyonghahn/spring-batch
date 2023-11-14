@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Configuration
-public class PreventRestartConfiguration {
+public class IncrementerConfiguration {
 
 	private final JobBuilderFactory jobBuilderFactory;
 	private final StepBuilderFactory stepBuilderFactory;
@@ -20,10 +20,11 @@ public class PreventRestartConfiguration {
 	@Bean
 	public Job batchJob() {
 		return this.jobBuilderFactory.get("batchJob")
+			//                .incrementer(new RunIdIncrementer())
+			.incrementer(new CustomJobParametersIncrementer())
 			.start(step1())
 			.next(step2())
 			.next(step3())
-			.preventRestart()
 			.build();
 	}
 
@@ -49,8 +50,8 @@ public class PreventRestartConfiguration {
 	public Step step3() {
 		return stepBuilderFactory.get("step3")
 			.tasklet((contribution, chunkContext) -> {
-				throw new RuntimeException("step3 has failed");
-			   // return RepeatStatus.FINISHED;
+				System.out.println("step3 has executed");
+				return RepeatStatus.FINISHED;
 			})
 			.build();
 	}
