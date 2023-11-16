@@ -51,6 +51,7 @@
   * **[SimpleJob 아키텍처](#simplejob-아키텍처)**
 * **[스프링 배치 실행 - Step](#스프링-배치-실행---step)**
   * **[StepBuilderFactory](#stepbuilderfactory)**
+  * **[TaskletStep - 개념 및 API 소개](#taskletstep---개념-및-api-소개)**
 * **[스프링 배치 실행 - Flow](#스프링-배치-실행---flow)**
   * **[FlowJob - 개념 및 API 소개](#flowjob---개념-및-api-소개)**
   * **[FlowJob - start() / next()](#FlowJob---start--next)**
@@ -564,6 +565,24 @@ __StepBuilder__
 ![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/d12df058-5e60-4912-b9f2-0c7cc419bb26)   
 ![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/6ee8f8cd-c6c6-475e-84d1-e033a14b9e6f)
 
+### TaskletStep - 개념 및 API 소개
+__기본 개념__   
+- 스프링 배치에서 제공하는 Step의 구현체로서 Tasklet을 실행시키는 도메인 객체이다.
+- RepeatTemplate을 사용해서 Tasklet의 구문을 트랜잭션 경계 내에서 반복해서 실행한다.
+- Task 기반과 Chunk 기반으로 나누어서 Tasklet을 실행한다.
+
+__Task vs Chunk 기반 비교__   
+- 스프링 배치에서 Step의 실행 단위는 크게 2가지로 나뉜다.
+  - chunk 기반
+    - 하나의 큰 덩어리를 n개씩 나눠서 실행한다는 의미로 대량 처리를 하는 경우 효과적으로 설계 되었다.
+    - ItemReader, ItemProcessor, ItemWriter를 사용하며 청크 기반 전용 Tasklet인 ChunkOrientedTasklet 구현체가 제공된다.
+  - Task 기반
+    - ItemReader와 ItemWriter와 같은 청크 기반의 작업보다 단일 작업 기반으로 처리되는 것이 더 효율적인 경우
+    - 주로 Tasklet 구현체를 만들어 사용
+    - 대량 처리를 하는 경우 chunk 기반에 비해 더 복잡한 구현 필요
+
+![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/d5099800-e76d-47dc-81f1-744998c7902f)
+![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/d8fb9379-da1d-4f1a-b27a-b7be7e66b06d)
 
 ## 스프링 배치 실행 - Flow
 ### FlowJob - 개념 및 API 소개
