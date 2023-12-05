@@ -52,6 +52,7 @@
 * **[스프링 배치 실행 - Step](#스프링-배치-실행---step)**
   * **[StepBuilderFactory](#stepbuilderfactory)**
   * **[TaskletStep - 개념 및 API 소개](#taskletstep---개념-및-api-소개)**
+  * **[TaskletStep - tasklet()](#taskletstep---tasklet)**
 * **[스프링 배치 실행 - Flow](#스프링-배치-실행---flow)**
   * **[FlowJob - 개념 및 API 소개](#flowjob---개념-및-api-소개)**
   * **[FlowJob - start() / next()](#FlowJob---start--next)**
@@ -586,6 +587,20 @@ __Task vs Chunk 기반 비교__
 
 ![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/d5099800-e76d-47dc-81f1-744998c7902f)
 ![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/d8fb9379-da1d-4f1a-b27a-b7be7e66b06d)
+
+### TaskletStep - tasklet()
+__기본 개념__   
+- Tasklet 타입의 클래스를 설정한다.
+  - Tasklet
+    - Step 내에서 구성되고 실행되는 도메인 객체로서 주로 단일 태스크를 수행하기 위한 것
+    - TaskletStep에 의해 반복적으로 수행되며 반환값에 따라 계속 수행 혹은 종료한다.
+    - `RepeatStatus`은 Tasklet의 반복 여부 상태 값
+      - `RepeatStatus.FINISHED` : Tasklet 종료, RepeatStatus을 null로 반환하면 RepeatStatus.FINISHED로 해석된다.
+      - `RepeatStatus.CONTINUABLE` : Tasklet 반복
+      - RepeatStatus.FINISHED가 리턴되거나 실패 예외가 던져지기 전까지 TaskletStep에 의해 while 문 안에서 반복적으로 호출된다.
+- 익명 클래스 혹은 구현 클래스를 만들어서 사용한다.
+- 이 메소드를 실행하게 되면 TaskletStepBuilder가 반환되어 관련 API를 설정할 수 있다.
+- Step에 오직 하나의 Tasklet 설정이 가능하며 두 개 이상을 설정했을 경우 마지막에 설정한 객체가 실행된다.
 
 ## 스프링 배치 실행 - Flow
 ### FlowJob - 개념 및 API 소개
