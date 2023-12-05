@@ -53,7 +53,7 @@
   * **[StepBuilderFactory](#stepbuilderfactory)**
   * **[TaskletStep - 개념 및 API 소개](#taskletstep---개념-및-api-소개)**
   * **[TaskletStep - tasklet()](#taskletstep---tasklet)**
-  * **[TaskletStep - startLimit() / allowStartIfComplete()](#taskletstep---starlLimit--allowstartifcomplete)**
+  * **[TaskletStep - startLimit() / allowStartIfComplete()](#taskletstep---startlimit--allowstartifcomplete)**
 * **[스프링 배치 실행 - Flow](#스프링-배치-실행---flow)**
   * **[FlowJob - 개념 및 API 소개](#flowjob---개념-및-api-소개)**
   * **[FlowJob - start() / next()](#FlowJob---start--next)**
