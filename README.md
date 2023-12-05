@@ -67,6 +67,8 @@
   * **[Chunk Process 아키텍처](#chunk-process-아키텍처)**
 * **[스프링 배치 청크 프로세스 활용 - ItemReader](#스프링-배치-청크-프로세스-활용---itemreader)**
   * **[FlatFileItemReader - 개념 및 API 소개](#flatfileitemreader---개념-및-api-소개)**
+* **[스프링 배치 테스트 및 운영](스프링-배치-테스트-및-운영)**
+  * **[Spring Batch Test](#spring-batch-test)**
   
 ## 스프링 배치 시작
 ### 프로젝트 구성 및 의존성 설정
@@ -823,3 +825,46 @@ public FlatFileItemReader itemReader() {
     .build();
 }
 ```
+
+## 스프링 배치 테스트 및 운영
+### Spring Batch Test
+__pom.xml__   
+```xml
+<dependency>
+	<groupId>org.springframework.batch</groupId>
+	<artifactId>spring-batch-test</artifactId>	
+</dependency>
+```
+
+__@SpringBatchTest__   
+- 자동으로 ApplicationContext에 테스트에 필요한 여러 유틸 Bean을 등록해 주는 어노테이션
+  - JobLauncherTestUtils
+    - `launchJob()`, `launchStep()` 과 같은 스프링 배치 테스트에 필요한 유틸성 메소드 지원
+  - JobRepositoryTestUtils
+    - JobRepository를 사용해서 JobExecution을 생성 및 삭제 기능 메소드 지원
+  - StepScopeTestExecutionListener
+    - `@StepScope` 컨텍스트를 생성해주며 해당 컨텍스트를 통해 JobParameter 등을 단위 테스트에서 DI 받을 수 있다.
+  - JobScopeTestExecutionListener
+    - `@JobScope` 컨텍스트를 생성해주며 해당 컨텍스트를 통해 JobParameter 등을 단위 테스트에서 DI 받을 수 있다.
+
+![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/193b9aa6-7030-469b-994f-a2c73c1aad78)
+
+```java
+@RunWith(SpringRunner.class)
+@SpringBatchTest
+@SpringBootTest(classes={BatchJobConfiguration.class, TestBatchConfig.class})
+public class BatchJobConfigurationTest {
+    ...
+}
+```
+- `@SpringBatchTest` : JobLauncherTestUtils, JobRepositoryTestUtils 등을 제공하는 어노테이션
+- `@SpringBootTest(classes={...})` : Job 설정 클래스 지정, 통합 테스트를 위한 여러 의존성 빈들을 주입 받기 위한 어노테이션
+
+```java
+@Configuration
+@EnableAutoConfiguration
+@EnableBatchProcessing
+public class TestBatchConfig {}
+```
+- `@EnableBatchProcessing` : 테스트 시 배치환경 및 설정 초기화를 자동 구동하기 위한 어노테이션
+- 테스트 클래스마다 선언하지 않고 공통으로 사용하기 위함
