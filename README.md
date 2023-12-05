@@ -69,7 +69,7 @@
   * **[FlatFileItemReader - 개념 및 API 소개](#flatfileitemreader---개념-및-api-소개)**
 * **[스프링 배치 테스트 및 운영](스프링-배치-테스트-및-운영)**
   * **[Spring Batch Test](#spring-batch-test)**
-  * **[JobExplorer / JobRegistry / JobOperator](#jobexplorer---jobregistry---joboperator)**
+  * **[JobExplorer / JobRegistry / JobOperator](#jobexplorer--jobregistry--joboperator)**
   
 ## 스프링 배치 시작
 ### 프로젝트 구성 및 의존성 설정
