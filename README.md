@@ -69,6 +69,7 @@
   * **[FlatFileItemReader - 개념 및 API 소개](#flatfileitemreader---개념-및-api-소개)**
 * **[스프링 배치 테스트 및 운영](스프링-배치-테스트-및-운영)**
   * **[Spring Batch Test](#spring-batch-test)**
+  * **[JobExplorer / JobRegistry / JobOperator](#jobexplorer---jobregistry---joboperator)**
   
 ## 스프링 배치 시작
 ### 프로젝트 구성 및 의존성 설정
@@ -868,3 +869,22 @@ public class TestBatchConfig {}
 ```
 - `@EnableBatchProcessing` : 테스트 시 배치환경 및 설정 초기화를 자동 구동하기 위한 어노테이션
 - 테스트 클래스마다 선언하지 않고 공통으로 사용하기 위함
+
+### JobExplorer / JobRegistry / JobOperator
+- JobExplorer
+  - JobRepository의 readonly 버전
+  - 실행 중인 Job의 실행 정보인 JobExecution 또는 Step의 실행 정보인 StepExecution을 조회할 수 있다.
+- JobRegistry
+  - 생성된 Job을 자동으로 등록, 추적 및 관리하며 여러 곳에서 job을 생성한 경우 ApplicationContext에서 job을 수집해서 사용할 수 있다.
+  - 기본 구현체로 map 기반의 MapJobRegistry 클래스를 제공한다.
+    - jobName을 key로 하고 job을 값으로 하여 매핑한다.
+  - job 등록
+    - `JobRegistryBeanPostProcessor` `BeanPostProcessor` 단계에서 bean 초기화 시 자동으로 JobRegistry에 job을 등록시켜준다.
+- JobOperator
+  - JobExplorer, JobRepository, JobRegistry, JobLauncher를 포함하고 있으며 배치의 중단, 재시작, job 요약 등의 모니터링이 가능하다.
+  - 기본 구현체로 SimpleJobOperator 클래스를 제공한다.
+
+![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/aade4c8f-9eaf-4172-b117-cba8c19502ea)
+![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/90740aeb-1d19-42a2-abc8-786b0e554cb2)
+![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/c329e7a1-9751-403e-9899-29bffa500074)
+
