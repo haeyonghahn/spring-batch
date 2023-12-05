@@ -53,6 +53,7 @@
   * **[StepBuilderFactory](#stepbuilderfactory)**
   * **[TaskletStep - 개념 및 API 소개](#taskletstep---개념-및-api-소개)**
   * **[TaskletStep - tasklet()](#taskletstep---tasklet)**
+  * **[TaskletStep - startLimit() / allowStartIfComplete()](#taskletstep---starlLimit--allowstartifcomplete)**
 * **[스프링 배치 실행 - Flow](#스프링-배치-실행---flow)**
   * **[FlowJob - 개념 및 API 소개](#flowjob---개념-및-api-소개)**
   * **[FlowJob - start() / next()](#FlowJob---start--next)**
@@ -601,6 +602,21 @@ __기본 개념__
 - 익명 클래스 혹은 구현 클래스를 만들어서 사용한다.
 - 이 메소드를 실행하게 되면 TaskletStepBuilder가 반환되어 관련 API를 설정할 수 있다.
 - Step에 오직 하나의 Tasklet 설정이 가능하며 두 개 이상을 설정했을 경우 마지막에 설정한 객체가 실행된다.
+
+### TaskletStep - startLimit() / allowStartIfComplete()
+#### startLimit()
+__기본 개념__   
+- Step의 실행 횟수를 조정할 수 있다.
+- Step마다 설정할 수 있다.
+- 설정 값을 초과해서 다시 실행하려고 하면 StartLimitExceededException이 발생
+- start-limit의 디폴트 값은 Integer.MAX_VALUE
+
+#### allowStartIfComplete()
+__기본 개념__   
+- 재시작 가능한 job에서 Step의 이전 성공 여부와 상관없이 항상 step을 실행하기 위한 설정
+- 실행마다 유효성을 검증하는 Step이나 사전 작업이 꼭 필요한 Step 등
+- 기본적으로 COMPLETED 상태를 가진 Step은 Job 재시작 시 실행하지 않고 스킵한다.
+- allowStartIfComplete가 `true`로 설정된 step은 항상 실행한다.
 
 ## 스프링 배치 실행 - Flow
 ### FlowJob - 개념 및 API 소개
