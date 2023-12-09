@@ -54,6 +54,7 @@
   * **[TaskletStep - 개념 및 API 소개](#taskletstep---개념-및-api-소개)**
   * **[TaskletStep - tasklet()](#taskletstep---tasklet)**
   * **[TaskletStep - startLimit() / allowStartIfComplete()](#taskletstep---startlimit--allowstartifcomplete)**
+  * **[TaskletStep 아키텍처](#taskletstep-아키텍처)**
 * **[스프링 배치 실행 - Flow](#스프링-배치-실행---flow)**
   * **[FlowJob - 개념 및 API 소개](#flowjob---개념-및-api-소개)**
   * **[FlowJob - start() / next()](#FlowJob---start--next)**
@@ -617,6 +618,9 @@ __기본 개념__
 - 실행마다 유효성을 검증하는 Step이나 사전 작업이 꼭 필요한 Step 등
 - 기본적으로 COMPLETED 상태를 가진 Step은 Job 재시작 시 실행하지 않고 스킵한다.
 - allowStartIfComplete가 `true`로 설정된 step은 항상 실행한다.
+
+### TaskletStep 아키텍처
+![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/7383c4d6-6b99-40ca-af13-068a746baa9e)
 
 ## 스프링 배치 실행 - Flow
 ### FlowJob - 개념 및 API 소개
