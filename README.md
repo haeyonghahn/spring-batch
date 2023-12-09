@@ -55,6 +55,7 @@
   * **[TaskletStep - tasklet()](#taskletstep---tasklet)**
   * **[TaskletStep - startLimit() / allowStartIfComplete()](#taskletstep---startlimit--allowstartifcomplete)**
   * **[TaskletStep 아키텍처](#taskletstep-아키텍처)**
+  * **[JobStep](#jobstep)**
 * **[스프링 배치 실행 - Flow](#스프링-배치-실행---flow)**
   * **[FlowJob - 개념 및 API 소개](#flowjob---개념-및-api-소개)**
   * **[FlowJob - start() / next()](#FlowJob---start--next)**
@@ -621,6 +622,12 @@ __기본 개념__
 
 ### TaskletStep 아키텍처
 ![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/7383c4d6-6b99-40ca-af13-068a746baa9e)
+
+### JobStep
+- Job 에 속하는 Step 중 외부의 Job 을 포함하고 있는 Step
+- 외부의 Job 이 실패하면 해당 Step 이 실패하므로 결국 최종 기본 Job 도 실패한다.
+- 모든 메타데이터는 기본 Job 과 외부 Job 별로 각각 저장된다.
+- 커다란 시스템을 작은 모듈로 쪼개고 job의 흐름를 관리하고자 할 때 사용할 수 있다.
 
 ## 스프링 배치 실행 - Flow
 ### FlowJob - 개념 및 API 소개
