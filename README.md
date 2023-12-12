@@ -622,12 +622,26 @@ __기본 개념__
 
 ### TaskletStep 아키텍처
 ![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/7383c4d6-6b99-40ca-af13-068a746baa9e)
+![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/28a79448-4f23-4bbe-b388-15bff5f8b9c4)
 
 ### JobStep
 - Job 에 속하는 Step 중 외부의 Job 을 포함하고 있는 Step
 - 외부의 Job 이 실패하면 해당 Step 이 실패하므로 결국 최종 기본 Job 도 실패한다.
 - 모든 메타데이터는 기본 Job 과 외부 Job 별로 각각 저장된다.
 - 커다란 시스템을 작은 모듈로 쪼개고 job의 흐름를 관리하고자 할 때 사용할 수 있다.
+
+```java
+public Step jobStep() {
+  return stepBuilderFactory.get("jobStep")		// StepBuilder를 생성하는 팩토리, Step의 이름을 매개변수로 받음
+    .job(Job)						// JobStep 내에서 실행될 Job 설정, JobStepBuilder 반환
+    .launcher(JobLauncher)				// Job을 실행할 JobLauncher 설정
+    .parametersExtractor(JobParametersExtractor)	// Step의 ExecutionContext를 Job이 실행되는데 필요한 JobParameters로 변환
+    .build();						// JobStep을 생성
+}
+```
+![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/93659740-d6b8-4926-943e-272e496590c4)
+![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/dbeb27e4-6aa9-4def-8581-4ebe8efd8dd6)
+![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/0ad59d49-04aa-407d-8899-64de87f2e8a8)
 
 ## 스프링 배치 실행 - Flow
 ### FlowJob - 개념 및 API 소개
