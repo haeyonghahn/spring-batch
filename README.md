@@ -664,16 +664,31 @@ public Job batchJob() {
 	  .to(Step)                               // 다음으로 이동할 Step 지정
 	  .stop()                                 // fail(), end(), stopAndRestart()	
 	  .from(Step)                             // 이전 단계에서 정의한 Step의 Flow를 추가적으로 정의함
-    .next(Step)                             // 다음으로 이동할 Step 지정
+          .next(Step)                             // 다음으로 이동할 Step 지정
 	  .end()                                  // build() 앞에 위치하면 FlowBuilder를 종료하고 SimpleFlow 객체 생성
 	  .build()                                // FlowJob 생성하고 flow 필드에 SimpleFlow 저장
 }
 ```
+FlowBuilder 의 on(String pattern) 메서드를 호출하게 되면 TransitionBuilder 가 작동하게 되면서 Step 간 조건부 전환을 구성할 수 있게 된다.
 
-- FlowBuilder 의 on(String pattern) 메서드를 호출하게 되면 TransitionBuilder 가 작동하게 되면서 Step 간 조건부 전환을 구성할 수 있게 된다.
 ![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/8e64f4ae-9da3-47ff-a33c-5cd765c4602c)
 
 ### FlowJob - start() / next()
+```java
+public Job batchJob() {
+  return jobBuilderFactory.get("batchJob")
+    .start(Flow)	// 처음 실행할 Flow 설정, JobFlowBuilder가 반환된다. 여기에 Step이 인자로 오게 되면 SimpleJobBuilder가 반환
+    .next(Step or Flow or JobExecutionDecider)
+    .on(String pattern)
+    .to(Step)
+    .stop() / fail() / end() / stopAndRestart()
+    .end()
+    .build();
+}
+```
+![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/99dda99a-97cf-4679-a31b-fee1d23fee7f)
+
+위의 구성은 Step을 Flow 별로 분리하여 구성하는 장점이 있지만 Step 중 하나라도 실패할 경우 전체 Job이 실패하는 규칙은 동일하다.
 
 ## 스프링 배치 청크 프로세스 이해
 ### Chunk
