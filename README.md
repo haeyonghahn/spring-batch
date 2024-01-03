@@ -72,6 +72,7 @@
 * **[스프링 배치 청크 프로세스 활용 - ItemReader](#스프링-배치-청크-프로세스-활용---itemreader)**
   * **[FlatFileItemReader - 개념 및 API 소개](#flatfileitemreader---개념-및-api-소개)**
   * **[FlatFileItemReader - delimetedlinetokenizer](#flatfileitemreader---delimetedlinetokenizer)**
+  * **[FlatFileItemReader - fixedlengthtokenizer](#flatfileitemReader---fixedlengthtokenizer)**
 * **[스프링 배치 테스트 및 운영](스프링-배치-테스트-및-운영)**
   * **[Spring Batch Test](#spring-batch-test)**
   * **[JobExplorer / JobRegistry / JobOperator](#jobexplorer--jobregistry--joboperator)**
@@ -904,6 +905,16 @@ __기본 개념__
 
 __구조__   
 ![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/ff600c04-167e-47e4-bbc7-7050405b3e5f)
+
+### FlatFileItemReader - fixedlengthtokenizer
+__기본 개념__   
+- 한 개 라인의 String을 사용자가 설정한 고정길이 기준으로 나누어 토큰화하는 방식
+- 범위는 문자열 형식으로 설정할 수 있다.
+  - "1-4" 또는 "1-3,4-6,7" 또는 "1-2,4-5,7-10"
+  - 마지막 범위가 열려 있으면 나머지 행이 해당 열로 읽혀진다.
+
+__구조__   
+![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/c0f6c793-3302-454c-a6cb-bc5761f2ec13)
 
 ## 스프링 배치 테스트 및 운영
 ### Spring Batch Test
