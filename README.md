@@ -72,7 +72,8 @@
 * **[스프링 배치 청크 프로세스 활용 - ItemReader](#스프링-배치-청크-프로세스-활용---itemreader)**
   * **[FlatFileItemReader - 개념 및 API 소개](#flatfileitemreader---개념-및-api-소개)**
   * **[FlatFileItemReader - delimetedlinetokenizer](#flatfileitemreader---delimetedlinetokenizer)**
-  * **[FlatFileItemReader - fixedlengthtokenizer](#flatfileitemReader---fixedlengthtokenizer)**
+  * **[FlatFileItemReader - fixedlengthtokenizer](#flatfileitemreader---fixedlengthtokenizer)**
+  * **[FlatFileItemReader - Exception Handling](#flatfileitemreader---exception-handling)**
 * **[스프링 배치 테스트 및 운영](스프링-배치-테스트-및-운영)**
   * **[Spring Batch Test](#spring-batch-test)**
   * **[JobExplorer / JobRegistry / JobOperator](#jobexplorer--jobregistry--joboperator)**
@@ -915,6 +916,23 @@ __기본 개념__
 
 __구조__   
 ![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/c0f6c793-3302-454c-a6cb-bc5761f2ec13)
+
+### FlatFileItemReader - Exception Handling
+__기본 개념__   
+- 라인을 읽거나 토큰화할 때 발생하는 Parsing 예외를 처리할 수 있도록 예외 계층 제공
+- 토큰화 검증을 엄격하게 적용하지 않도록 설정하면 Parsing 예외가 발생하지 않도록 할 수 있다.
+
+![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/349a234e-198f-4b32-9704-a7f9ead0bf8b)
+
+__토큰화 검증 기준 설정__   
+```java
+tokenizer.setColumns(new Range[] { new Range(1, 5), new Range(6, 10) }); // 토큰 길이 : 10자
+tokenizer.setStrict(false); // 토큰화 검증을 적용하지 않음
+FieldSet tokens = tokenizer.tokenize("12345"); // 라인 길이 : 5자
+```
+- LineTokenizer의 Strict 속성을 `false`로 설정하게 되면 Tokenizer가 라인 길이를 검증하지 않는다.
+- Tokenizer가 라인 길이나 컬럼명을 검증하지 않을 경우 예외가 발생하지 않는다.
+- FieldSet은 성공적으로 리턴이 되며 두번째 범위 값은 빈 토큰을 가지게 된다.
 
 ## 스프링 배치 테스트 및 운영
 ### Spring Batch Test
