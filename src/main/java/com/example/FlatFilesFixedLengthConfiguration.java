@@ -10,6 +10,7 @@ import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
+import org.springframework.batch.item.file.transform.Range;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Configuration
-public class FlatFilesDelimitedConfiguration {
+public class FlatFilesFixedLengthConfiguration {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
@@ -46,6 +47,21 @@ public class FlatFilesDelimitedConfiguration {
             .build();
     }
 
+    public FlatFileItemReader itemReader() {
+        return new FlatFileItemReaderBuilder<Customer>()
+            .name("flatFile")
+            .resource(new ClassPathResource("customer.txt"))
+            .fieldSetMapper(new BeanWrapperFieldSetMapper<>())
+            .targetType(Customer.class)
+            .linesToSkip(1)
+            .fixedLength()
+            .addColumns(new Range(1,5))
+            .addColumns(new Range(6,9))
+            .addColumns(new Range(10, 11))
+            .names("name", "year", "age")
+            .build();
+    }
+
     @Bean
     public Step step2() {
         return stepBuilderFactory.get("step2")
@@ -53,30 +69,6 @@ public class FlatFilesDelimitedConfiguration {
                 System.out.println("step2 has executed");
                 return RepeatStatus.FINISHED;
             })
-            .build();
-    }
-
-    public FlatFileItemReader itemReader() {
-        return new FlatFileItemReaderBuilder<Customer>()
-            .name("flatFile")
-            .resource(new ClassPathResource("customer.csv"))
-            .fieldSetMapper(new CustomerFieldSetMapper())
-            // .targetType(Customer.class)
-            .linesToSkip(1)
-            .delimited().delimiter(",")
-            .names("name", "age", "year")
-            .build();
-    }
-
-    public FlatFileItemReader itemReader2() {
-        return new FlatFileItemReaderBuilder<Customer>()
-            .name("flatFile")
-            .resource(new ClassPathResource("customer.csv"))
-            .fieldSetMapper(new BeanWrapperFieldSetMapper<>())
-            .targetType(Customer.class)
-            .linesToSkip(1)
-            .delimited().delimiter(",")
-            .names("name","year","age")
             .build();
     }
 }
