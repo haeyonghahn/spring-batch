@@ -71,6 +71,7 @@
   * **[Chunk Process 아키텍처](#chunk-process-아키텍처)**
 * **[스프링 배치 청크 프로세스 활용 - ItemReader](#스프링-배치-청크-프로세스-활용---itemreader)**
   * **[FlatFileItemReader - 개념 및 API 소개](#flatfileitemreader---개념-및-api-소개)**
+  * **[FlatFileItemReader - delimetedlinetokenizer](#flatfileitemreader---delimetedlinetokenizer)**
 * **[스프링 배치 테스트 및 운영](스프링-배치-테스트-및-운영)**
   * **[Spring Batch Test](#spring-batch-test)**
   * **[JobExplorer / JobRegistry / JobOperator](#jobexplorer--jobregistry--joboperator)**
@@ -897,6 +898,12 @@ public FlatFileItemReader itemReader() {
     .build();
 }
 ```
+### FlatFileItemReader - delimetedlinetokenizer
+__기본 개념__    
+- 한 개 라인의 String을 구분자 기준으로 나누어 토큰화하는 방식
+
+__구조__   
+![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/ff600c04-167e-47e4-bbc7-7050405b3e5f)
 
 ## 스프링 배치 테스트 및 운영
 ### Spring Batch Test
