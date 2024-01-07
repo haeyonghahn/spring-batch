@@ -75,6 +75,8 @@
   * **[FlatFileItemReader - fixedlengthtokenizer](#flatfileitemreader---fixedlengthtokenizer)**
   * **[FlatFileItemReader - Exception Handling](#flatfileitemreader---exception-handling)**
   * **[JsonItemReader](#jsonitemreader)**
+  * **[DB - Cursor & Paging 이해](#db---cursor-&-paging-이해)**
+  * **[DB - JdbcCursorItemReader](#db---jdbccursoritemreader)**
 * **[스프링 배치 테스트 및 운영](스프링-배치-테스트-및-운영)**
   * **[Spring Batch Test](#spring-batch-test)**
   * **[JobExplorer / JobRegistry / JobOperator](#jobexplorer--jobregistry--joboperator)**
@@ -935,7 +937,7 @@ FieldSet tokens = tokenizer.tokenize("12345"); // 라인 길이 : 5자
 - Tokenizer가 라인 길이나 컬럼명을 검증하지 않을 경우 예외가 발생하지 않는다.
 - FieldSet은 성공적으로 리턴이 되며 두번째 범위 값은 빈 토큰을 가지게 된다.
 
-## JsonItemReader
+### JsonItemReader
 __기본 개념__   
 - Json 데이터의 Parsing과 Binding을 JsonObjectReader 인터페이스 구현체에 위임하여 처리하는 ItemReader
 - 두 가지 구현체 제공
@@ -948,6 +950,52 @@ __구조__
 
 __API 설정__    
 ![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/1f744a79-68b9-45ec-a22e-cf4ad07fbd2b)
+
+### DB - Cursor & Paging 이해
+__기본 개념__   
+- 배치 어플리케이션은 실시간적 처리가 어려운 대용량 데이터를 다루며 이 때 DB I/O의 성능문제와 메모리 자원의 효율성 문제를 해결할 수 있어야 한다.
+- 스프링 배치에서는 대용량 데이터 처리를 위한 두 가지 해결방안을 제시하고 있다.
+
+__Cursor Based 처리__   
+- JDBC ResultSet의 기본 메커니즘을 사용
+- 현재 행에 커서를 유지하며 다음 데이터를 호출하면 다음 행으로 커서를 이동하며 데이터 반환이 이루어지는 Streaming 방식의 I/O이다.
+- ResultSet이 open될 때마다 next() 메소드가 호출되어 Database의 데이터가 반환되고 객체와 매핑이 이루어진다.
+- DB Connection이 연결되면 배치 처리가 완료될 때까지 데이터를 읽어오기 때문에 DB와 SocketTimeout을 충분히 큰 값으로 설정 필요
+- 모든 결과를 메모리에 할당하기 때문에 메모리 사용량이 많아지는 단점이 있다.
+- Connection 연결 유지 시간과 메모리 공간이 충분하다면 대량의 데이터 처리에 적합할 수 있다 (fetchSize 조절)
+
+__Paging Based 처리__   
+- 페이징 단위로 데이터를 조회하는 방식으로 Page Size만큼 한번에 메모리로 가지고 온 다음 한 개씩 읽는다.
+- 한 페이지를 읽을때마다 Connection을 맺고 끊기 때문에 대량의 데이터를 처리하더라도 SocketTimeout 예외가 거의 일어나지 않는다.
+- 시작 행 번호를 지정하고 페이지에 반환시키고자 하는 행의 수를 지정한 후 사용 - Offset, Limit
+- 페이징 단위의 결과만 메모리에 할당하기 때문에 메모리 사용량이 적어지는 장점이 있다.
+- Connection 연결 유지 시간이 길지 않고 메모리 공간을 효율적으로 사용해야 하는 데이터 처리에 적합할 수 있다.
+
+![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/203e467f-29a3-4a13-93d3-b85022c440ba)
+
+### DB - JdbcCursorItemReader
+__기본 개념__   
+- Cursor 기반의 JDBC 구현체로서 ResultSet과 함께 사용되며 Datasource에서 Connection을 얻어와서 SQL을 실행한다.
+- Thread 안정성을 보장하지 않기 때문에 멀티 스레드 환경에서 사용할 경우 동시성 이슈가 발생하지 않도록 별도 동기화 처리가 필요하다.
+
+__API__   
+```java
+public JdbcCursorItemReader itemReader() {
+        return new JdbcCursorItemReaderBuilder<T>()
+	.name(“cursorItemReader")
+ 	.fetchSize(int chunkSize)			// Cursor 방식으로 데이터를 가지고 올 때 한번에 메모리에 할당한 크기를 설정한다. Chunck Size와 동일하게 준다.
+	.dataSource(DataSource)				// DB에 접근하기 위해 Datasource 설정
+	.rowMapper(RowMapper)				// 쿼리 결과로 반환되는 데이터와 객체를 매핑하기 위한 RowMapper 설정
+	.beanRowMapper(Class<T>)			// 별도의 RowMapper를 설정하지 않고 클래스 타입을 설정하면 자동으로 객체와 매핑
+	.sql(String sql)				// ItemReader가 조회할 때 사용할 쿼리 문장 설정
+	.queryArguments(Object... args)			// 쿼리 파라미터 설정
+	.maxItemCount(int count)			// 조회할 최대 item 수
+	.currentItemCount(int count)			// 조회 Item의 시작 지점
+	.maxRows(int maxRows)				// ResultSet 오브젝트가 포함할 수 있는 최대 행 수
+	.build();
+    }
+```
+![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/13b4e889-3d6a-403c-94c7-7fc4678dd449)
 
 ## 스프링 배치 테스트 및 운영
 ### Spring Batch Test
