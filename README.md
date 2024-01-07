@@ -74,6 +74,7 @@
   * **[FlatFileItemReader - delimetedlinetokenizer](#flatfileitemreader---delimetedlinetokenizer)**
   * **[FlatFileItemReader - fixedlengthtokenizer](#flatfileitemreader---fixedlengthtokenizer)**
   * **[FlatFileItemReader - Exception Handling](#flatfileitemreader---exception-handling)**
+  * **[JsonItemReader](#jsonitemreader)**
 * **[스프링 배치 테스트 및 운영](스프링-배치-테스트-및-운영)**
   * **[Spring Batch Test](#spring-batch-test)**
   * **[JobExplorer / JobRegistry / JobOperator](#jobexplorer--jobregistry--joboperator)**
@@ -933,6 +934,13 @@ FieldSet tokens = tokenizer.tokenize("12345"); // 라인 길이 : 5자
 - LineTokenizer의 Strict 속성을 `false`로 설정하게 되면 Tokenizer가 라인 길이를 검증하지 않는다.
 - Tokenizer가 라인 길이나 컬럼명을 검증하지 않을 경우 예외가 발생하지 않는다.
 - FieldSet은 성공적으로 리턴이 되며 두번째 범위 값은 빈 토큰을 가지게 된다.
+
+## JsonItemReader
+__기본 개념__   
+- Json 데이터의 Parsing과 Binding을 JsonObjectReader 인터페이스 구현체에 위임하여 처리하는 ItemReader
+- 두 가지 구현체 제공
+  - JacksonJsonObjectReader
+  - GsonJsonObjectReader
 
 ## 스프링 배치 테스트 및 운영
 ### Spring Batch Test
