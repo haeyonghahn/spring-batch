@@ -941,6 +941,13 @@ __기본 개념__
 - 두 가지 구현체 제공
   - JacksonJsonObjectReader
   - GsonJsonObjectReader
+ 
+__구조__     
+![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/e9487b8c-3cdc-4f9d-9978-1dabe0ebbc1f)
+![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/b813a6bd-4e6d-4dda-a9db-fa00500a4de1)
+
+__API 설정__    
+![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/1f744a79-68b9-45ec-a22e-cf4ad07fbd2b)
 
 ## 스프링 배치 테스트 및 운영
 ### Spring Batch Test
