@@ -78,6 +78,7 @@
   * **[DB - Cursor & Paging 이해](#db---cursor-&-paging-이해)**
   * **[DB - JdbcCursorItemReader](#db---jdbccursoritemreader)**
   * **[DB - JpaCursorItemReader](#db---jpacursoritemreader)**
+  * **[DB - JdbcPagingItemReader](#db---jdbcpagingitemreader)**
 * **[스프링 배치 테스트 및 운영](스프링-배치-테스트-및-운영)**
   * **[Spring Batch Test](#spring-batch-test)**
   * **[JobExplorer / JobRegistry / JobOperator](#jobexplorer--jobregistry--joboperator)**
@@ -999,6 +1000,8 @@ public JdbcCursorItemReader itemReader() {
 ![image](https://github.com/haeyonghahn/spring-batch/assets/31242766/13b4e889-3d6a-403c-94c7-7fc4678dd449)
 
 ### DB - JpaCursorItemReader
+
+### DB - JdbcPagingItemReader
 
 ## 스프링 배치 테스트 및 운영
 ### Spring Batch Test
